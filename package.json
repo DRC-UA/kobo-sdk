@@ -2,7 +2,7 @@
   "name": "kobo-sdk",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "dependencies": {
     "@alexandreannic/ts-utils": "^2.1.19",
     "@types/promise-retry": "^1.1.6",
