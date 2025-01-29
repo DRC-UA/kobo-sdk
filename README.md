@@ -1,9 +1,21 @@
-# Kobo-SDK
+# Kobo-SDK ![npm](https://img.shields.io/npm/v/kobo-sdk)
 
 A TypeScript SDK for interacting with the [KoboToolbox](https://www.kobotoolbox.org/) API. This library simplifies
 authentication, data retrieval, and
 form management, making it easier to work with KoboToolbox in Node.js and browser environments.
 **Optimized for TypeScript, with full type definitions.**
+
+## Table of Contents
+- [Installation](#installation)
+- [Usage](#usage)
+  - [Initialization](#initialization)
+  - [Constructor parameters](#constructor-parameters)
+  - [Kobo servers index](#kobo-servers-index)
+  - [Insert new submission](#insert-new-submission)
+  - [Update submissions](#update-submissions)
+  - [Fetch submissions](#fetch-submissions)
+- [TypeScript support](#typeScript-support)
+- [Contributing](#contributing)
 
 ## Installation
 
@@ -23,7 +35,7 @@ const sdk = new KoboClient({
 })
 ```
 
-### Contructor parameters
+### Constructor parameters
 
 | Parameter        | Required | Description                                                                                                                                                   |
 |------------------|----------|---------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -44,8 +56,7 @@ const sdk = new KoboClient({
 ### Insert new submission
 
 **Only the question name** (without the `begin_group` path) is used as a key when submitting data.  
-The Kobo API expects grouped questions in a nested structure, but **this function automatically handles the formatting
-**.  
+The Kobo API expects grouped questions in a nested structure, but **this function automatically handles the formatting**.  
 If submission fails, it retries up to 8 times by default, which can be adjusted using the `retries` parameter.
 
 ```ts
@@ -111,7 +122,7 @@ sdk.v2.submission.get({
 })
 ```
 
-### TypeScript support
+## TypeScript support
 We strongly recommend using this **SDK** with **TypeScript** for full type support and preventing you from pulling your hair out.
 
 ![autocomplete-parameters.png](docs/autocomplete-parameters.png)
