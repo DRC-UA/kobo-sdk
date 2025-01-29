@@ -1,0 +1,30 @@
+{
+  "name": "kobo-sdk",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "version": "1.0.0",
+  "dependencies": {
+    "@alexandreannic/ts-utils": "^2.1.19",
+    "@types/promise-retry": "^1.1.6",
+    "@types/qs": "^6.9.15",
+    "axios": "1.7.9",
+    "date-fns": "4.1.0",
+    "promise-retry": "^2.0.1",
+    "qs": "^6.12.1",
+    "winston": "^3.13.1"
+  },
+  "scripts": {
+    "release-patch": "./release.sh patch",
+    "release-minor": "./release.sh minor",
+    "release-major": "./release.sh major",
+    "dev": "tsc -w",
+    "build": "tsc",
+    "test": "jest"
+  },
+  "devDependencies": {
+    "@types/jest": "^29.5.14",
+    "jest": "^29.7.0",
+    "ts-jest": "^29.2.5",
+    "typescript": "^5.6.2"
+  }
+}

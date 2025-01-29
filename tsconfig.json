@@ -1,0 +1,21 @@
+{
+  "compilerOptions": {
+    "strict": true,
+    "target": "ESNext",
+    "allowJs": true,
+    "sourceMap": true,
+    "lib": ["ES2021", "dom"],
+    "declaration": true,
+    "declarationMap": true,
+    "outDir": "./lib",
+    "checkJs": false,
+    "rootDir": "./src",
+    "resolveJsonModule": true,
+    "module": "CommonJS",
+    "moduleResolution": "Node",
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true
+  },
+  "include": ["src/**/*"],
+  "exclude": ["**/*.spec.ts", "**/*.test.ts"]
+}
