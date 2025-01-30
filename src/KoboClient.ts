@@ -23,20 +23,22 @@ export class KoboClient {
   }) {
     this.v1 = new KoboClientV1(
       new ApiClientClass({
-        baseUrl: urlv1,
+        baseUrl: urlv1 + '/api',
         headers: {
           Authorization: KoboClient.makeAuthorizationHeader(token),
         },
       }),
+      this,
       log,
     )
     this.v2 = new KoboClientV2(
       new ApiClientClass({
-        baseUrl: urlv2,
+        baseUrl: urlv2 + '/api',
         headers: {
           Authorization: KoboClient.makeAuthorizationHeader(token),
         },
       }),
+      this,
       log,
     )
   }

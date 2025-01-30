@@ -2,6 +2,7 @@ import {AxiosError} from 'axios'
 import {Kobo, Logger} from '../Kobo'
 import {ApiClient} from '../api-client/ApiClient'
 import {chunkify} from '@alexandreannic/ts-utils'
+import {KoboClientV2Submission} from './KoboClientV2Submission'
 
 export type KoboUpdateDataParamsData = Record<string, string | string[] | number | null | undefined>
 export type KoboUpdateDataParams<TData extends KoboUpdateDataParamsData = any> = {
@@ -17,6 +18,7 @@ export class KoboClientV2SubmissionFixedUpdated {
   constructor(
     private api: ApiClient,
     private log: Logger,
+    private parent: KoboClientV2Submission,
   ) {
   }
 

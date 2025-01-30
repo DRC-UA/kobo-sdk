@@ -185,6 +185,8 @@ export namespace Kobo {
   export namespace Submission {
     export type T = MetaData & Record<string, any>
 
+    export type Split = MetaData & Record<string, any>
+
     export type Id = string
     export type UUID = string
 
@@ -227,14 +229,15 @@ export namespace Kobo {
         timestamp: number
         uid: Validation
         by_whom: string
-      }
+      } | {}
       _submitted_by: any
-      // 'formhub/uuid': string,
-      // 'meta/instanceID': string,
+      'formhub/uuid': string,
+      'meta/instanceId'?: string,
+      'meta/instanceID'?: string,
     }
 
     export interface Status {
-      SubmittedViaWeb: 'submitted_via_web'
+      submitted_via_web: 'submitted_via_web'
     }
 
     export enum Validation {
@@ -244,7 +247,7 @@ export namespace Kobo {
       no_status = 'no_status',
     }
 
-    export type Geolocation = [number, number]
+    export type Geolocation = [number, number] | [null, null]
     export type Tags = any
     export type Notes = any
     export type Attachment = {

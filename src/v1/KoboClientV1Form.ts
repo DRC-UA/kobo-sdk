@@ -8,6 +8,6 @@ export class KoboClientV1Form {
   ) {}
 
   readonly getAll = async (): Promise<Kobo.V1.KoboV1Form[]> => {
-    return this.api.get(`/forms`)
+    return this.api.get(`/v1/forms`)
   }
 }

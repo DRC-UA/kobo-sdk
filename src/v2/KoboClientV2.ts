@@ -3,10 +3,12 @@ import {ApiClient} from '../api-client/ApiClient'
 import {KoboClientV2Submission} from './KoboClientV2Submission'
 import {KoboClientV2Form} from './KoboClientV2Form'
 import {KoboClientV2Hook} from './KoboClientV2Hook'
+import {KoboClient} from '../KoboClient'
 
 export class KoboClientV2 {
   constructor(
     private api: ApiClient,
+    public parent: KoboClient,
     private log: Logger,
   ) {
     this.submission = new KoboClientV2Submission(api, log, this)

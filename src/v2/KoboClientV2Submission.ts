@@ -1,10 +1,6 @@
 import {ApiClient} from '../api-client/ApiClient'
 import {Kobo, Logger} from '../Kobo'
-import {
-  KoboUpdateDataParams,
-  KoboUpdateDataParamsData,
-  KoboClientV2SubmissionFixedUpdated,
-} from './KoboClientV2SubmissionFixedUpdated'
+import {KoboClientV2SubmissionFixedUpdated, KoboUpdateDataParams, KoboUpdateDataParamsData,} from './KoboClientV2SubmissionFixedUpdated'
 import {queuify} from '../helper/Utils'
 import {map} from '@alexandreannic/ts-utils'
 import axios from 'axios'
@@ -15,9 +11,10 @@ export class KoboClientV2Submission {
   constructor(
     private api: ApiClient,
     private log: Logger,
-    private parent: KoboClientV2,
-    private editSdk = new KoboClientV2SubmissionFixedUpdated(api, log),
-  ) {}
+    public parent: KoboClientV2,
+    private editSdk = new KoboClientV2SubmissionFixedUpdated(api, log, this),
+  ) {
+  }
 
   static readonly parseDate = (_: Date) => _.toISOString()
 
@@ -30,16 +27,16 @@ export class KoboClientV2Submission {
    */
   private static readonly MAX_KOBO_PAGESIZE = 2e4
 
-  readonly getEditLinkUrl = ({formId, submissionId}: {formId: Kobo.FormId; submissionId: Kobo.SubmissionId}) => {
-    return this.api.get<{url: string; detail?: string}>(
+  readonly getEditLinkUrl = ({formId, submissionId}: { formId: Kobo.FormId; submissionId: Kobo.SubmissionId }) => {
+    return this.api.get<{ url: string; detail?: string }>(
       `/v2/assets/${formId}/data/${submissionId}/enketo/edit/?return_url=false`,
     )
   }
 
-  readonly delete = ({formId, ids}: {formId: Kobo.Form.Id; ids: Kobo.SubmissionId[]}): Promise<{detail: string}> => {
+  readonly delete = ({formId, submissionIds}: { formId: Kobo.Form.Id; submissionIds: Kobo.SubmissionId[] }): Promise<{ detail: string }> => {
     return this.api.delete(`/v2/assets/${formId}/data/bulk/`, {
       body: {
-        payload: {submission_ids: ids},
+        payload: {submission_ids: submissionIds},
       },
     })
   }

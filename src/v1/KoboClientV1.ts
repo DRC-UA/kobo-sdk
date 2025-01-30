@@ -2,10 +2,12 @@ import {Logger} from '../Kobo'
 import {ApiClient} from '../api-client/ApiClient'
 import {KoboClientV1Form} from './KoboClientV1Form'
 import {KoboClientV1Submission} from './KoboClientV1Submission'
+import {KoboClient} from '../KoboClient'
 
 export class KoboClientV1 {
   constructor(
     private api: ApiClient,
+    public parent: KoboClient,
     private log: Logger,
   ) {
     this.form = new KoboClientV1Form(api, log)
