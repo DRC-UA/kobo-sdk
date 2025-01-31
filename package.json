@@ -2,7 +2,19 @@
   "name": "kobo-sdk",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
-  "version": "1.1.0",
+  "version": "1.1.1",
+  "files": [
+    "lib"
+  ],
+  "scripts": {
+    "format": "prettier --write \"**/*.{js,ts,tsx,json}\" --config .prettierrc",
+    "release-patch": "./release.sh patch",
+    "release-minor": "./release.sh minor",
+    "release-major": "./release.sh major",
+    "dev": "tsc -w",
+    "build": "tsc",
+    "test": "jest"
+  },
   "dependencies": {
     "@alexandreannic/ts-utils": "^2.1.19",
     "@types/promise-retry": "^1.1.6",
@@ -16,15 +28,6 @@
     "winston": "^3.13.1",
     "xml-js": "^1.6.11",
     "zod": "^3.24.1"
-  },
-  "scripts": {
-    "format": "prettier --write \"**/*.{js,ts,tsx,json}\" --config .prettierrc",
-    "release-patch": "./release.sh patch",
-    "release-minor": "./release.sh minor",
-    "release-major": "./release.sh major",
-    "dev": "tsc -w",
-    "build": "tsc",
-    "test": "jest"
   },
   "devDependencies": {
     "@types/jest": "^29.5.14",

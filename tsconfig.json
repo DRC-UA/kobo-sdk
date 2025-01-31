@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "strict": true,
-    "target": "ESNext",
+    "target": "ES6",
     "allowJs": true,
     "sourceMap": true,
     "lib": ["ES2021", "dom"],
@@ -11,7 +11,7 @@
     "checkJs": false,
     "rootDir": "./src",
     "resolveJsonModule": true,
-    "module": "CommonJS",
+    "module": "ESNext",
     "moduleResolution": "Node",
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true

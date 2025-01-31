@@ -3,6 +3,8 @@
 # Exit on error
 set -e
 
+npm run build
+
 # Check if a version bump type is provided
 if [ -z "$1" ]; then
   echo "Usage: ./release.sh [patch|minor|major]"
@@ -24,6 +26,6 @@ NEW_VERSION=$(npm version $VERSION_TYPE)
 git push origin main --tags
 
 # Publish to npm
-npm publish
+npm publish --access public
 
 echo "✅ Release $NEW_VERSION published successfully!"
