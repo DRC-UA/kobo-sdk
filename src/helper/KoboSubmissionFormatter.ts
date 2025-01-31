@@ -4,11 +4,11 @@ import {Kobo} from '../Kobo'
 type Data = Record<string, Date | string | number | null | undefined | Data[]>
 // type NestedData = Record<string, Date | string | number | null | undefined | Data[] | Data>
 
-type QuestionIndex = Record<string, Kobo.Form.Question>
+export type QuestionIndex = Record<string, Kobo.Form.Question>
 
 export class KoboSubmissionFormatter {
 
-  static readonly prepareToSubmit = ({
+  static readonly formatForApiBody = ({
     data,
     output,
     questionIndex,
@@ -144,7 +144,7 @@ export class KoboSubmissionFormatter {
     }
   }
 
-  private static readonly formatDate = (value: any): string | null => {
+  static readonly formatDate = (value: any): string | null => {
     const parsedDate = new Date(value)
     return isNaN(parsedDate.getTime()) ? null : parsedDate.toISOString().split('T')[0]
   }

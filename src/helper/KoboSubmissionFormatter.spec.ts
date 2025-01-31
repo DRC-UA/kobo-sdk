@@ -151,7 +151,7 @@ describe('Formatter', function () {
 
   it('format to insert', function () {
     expect(
-      KoboSubmissionFormatter.prepareToSubmit({
+      KoboSubmissionFormatter.formatForApiBody({
         data: fixture.data.submitBody.withSection,
         questionIndex: fixture.questionIndex,
         output: 'toInsert',
@@ -200,7 +200,7 @@ describe('Formatter', function () {
 
   it('format to update with question names', function () {
     expect(
-      KoboSubmissionFormatter.prepareToSubmit({
+      KoboSubmissionFormatter.formatForApiBody({
         data:
           {
             oblast: 'CEJ',
@@ -219,7 +219,7 @@ describe('Formatter', function () {
 
   it('format to update with path', function () {
     expect(
-      KoboSubmissionFormatter.prepareToSubmit({
+      KoboSubmissionFormatter.formatForApiBody({
         data:
           {
             oblast: 'CEJ',

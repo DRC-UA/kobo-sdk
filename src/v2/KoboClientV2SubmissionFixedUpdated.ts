@@ -3,6 +3,7 @@ import {Kobo, Logger} from '../Kobo'
 import {ApiClient} from '../api-client/ApiClient'
 import {chunkify} from '@alexandreannic/ts-utils'
 import {KoboClientV2Submission} from './KoboClientV2Submission'
+import {KoboSubmissionFormatter, QuestionIndex} from '../helper/KoboSubmissionFormatter'
 
 export type KoboUpdateDataParamsData = Record<string, string | string[] | number | null | undefined>
 export type KoboUpdateDataParams<TData extends KoboUpdateDataParamsData = any> = {
@@ -37,6 +38,7 @@ export class KoboClientV2SubmissionFixedUpdated {
     if (this.locks.get(formId)) {
       return this.locks.get(formId)
     }
+    const form = await this.parent.parent.form.get({formId})
     const processing = (async () => {
       while (this.queues.get(formId)!.length > 0) {
         const params = this.queues.get(formId)!.shift()!
@@ -45,7 +47,7 @@ export class KoboClientV2SubmissionFixedUpdated {
             concurrency: KoboClientV2SubmissionFixedUpdated.CONCURRENCY,
             size: KoboClientV2SubmissionFixedUpdated.BATCH_SIZE,
             data: params.submissionIds,
-            fn: (ids) => this.apiCall({...params, submissionIds: ids}),
+            fn: (ids) => this.apiCall({...params, submissionIds: ids, questionIndex: KoboSubmissionFormatter.buildQuestionIndex(form)}),
           })
         } catch (e) {
           this.locks.delete(formId)
@@ -57,7 +59,7 @@ export class KoboClientV2SubmissionFixedUpdated {
     this.locks.delete(formId)
   }
 
-  private readonly apiCall = (params: KoboUpdateDataParams): Promise<Kobo.Submission.UpdateResponse> => {
+  private readonly apiCall = async (params: KoboUpdateDataParams & {questionIndex: QuestionIndex}): Promise<Kobo.Submission.UpdateResponse> => {
     const message = (status: 'Failed' | 'Success', e?: AxiosError) => {
       const name = params.formId
       const ids =
@@ -72,7 +74,12 @@ export class KoboClientV2SubmissionFixedUpdated {
         body: {
           payload: {
             submission_ids: submissionIds,
-            data,
+            data: KoboSubmissionFormatter.formatForApiBody({
+              data,
+              output: 'toUpdate',
+              questionIndex: params.questionIndex,
+            })
+            ,
           },
         },
       })

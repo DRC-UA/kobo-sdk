@@ -33,7 +33,7 @@ export class KoboClientV1Submission {
     formId: Kobo.FormId
   }): Promise<Kobo.V1.SubmitResponse> => {
     const form = await this.parent.parent.v2.form.get({formId})
-    const formattedData = KoboSubmissionFormatter.prepareToSubmit({data: data, output: 'toInsert', questionIndex: KoboSubmissionFormatter.buildQuestionIndex(form)})
+    const formattedData = KoboSubmissionFormatter.formatForApiBody({data: data, output: 'toInsert', questionIndex: KoboSubmissionFormatter.buildQuestionIndex(form)})
     const _uuid = uuid ?? (await this.parent.form.getAll().then((_) => _.find((f) => f.id_string === formId)?.uuid))
     if (!_uuid) throw new KoboError(`Form id ${formId} not found.`)
     return retry(
@@ -80,7 +80,7 @@ export class KoboClientV1Submission {
     formId: Kobo.FormId
   }): Promise<Kobo.V1.SubmitResponse> => {
     const form = await this.parent.parent.v2.form.get({formId})
-    const formattedData = KoboSubmissionFormatter.prepareToSubmit({data: data, output: 'toInsert', questionIndex: KoboSubmissionFormatter.buildQuestionIndex(form)})
+    const formattedData = KoboSubmissionFormatter.formatForApiBody({data: data, output: 'toInsert', questionIndex: KoboSubmissionFormatter.buildQuestionIndex(form)})
     const uuid = (await this.parent.form.getAll().then((_) => _.find((f) => f.id_string === formId)?.uuid))
     if (!uuid) throw new KoboError(`Form id ${formId} not found.`)
 
