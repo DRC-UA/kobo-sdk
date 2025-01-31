@@ -117,27 +117,27 @@ export class ApiClient {
         .then(mapData ?? ((_: AxiosResponse) => _.data))
         .catch(
           mapError ??
-            ((_: any) => {
-              const request = {method, url, qs: options?.qs, body: options?.body}
-              if (_.response && _.response.data) {
-                const message = _.response.data.details ?? _.response.data.timeout ?? JSON.stringify(_.response.data)
-                return Promise.reject(
-                  new ApiError(message, {
-                    code: _.response.status,
-                    id: _.response.data.type,
-                    request,
-                    // error: _,
-                  }),
-                )
-              }
+          ((_: any) => {
+            const request = {method, url, qs: options?.qs, body: options?.body}
+            if (_.response && _.response.data) {
+              const message = _.response.data.details ?? _.response.data.timeout ?? JSON.stringify(_.response.data)
               return Promise.reject(
-                new ApiError(`Something not caught went wrong`, {
-                  code: 'uncaught',
-                  // error: _,
+                new ApiError(message, {
+                  code: _.response.status,
+                  id: _.response.data.type,
                   request,
+                  // error: _,
                 }),
               )
-            }),
+            }
+            return Promise.reject(
+              new ApiError(`Something not caught went wrong`, {
+                code: 'uncaught',
+                // error: _,
+                request,
+              }),
+            )
+          }),
         )
     }
 

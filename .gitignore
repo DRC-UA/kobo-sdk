@@ -81,3 +81,5 @@ sessions/
 .idea/
 
 .DS_Store
+
+dist/

@@ -185,7 +185,7 @@ export namespace Kobo {
   export namespace Submission {
     export type T = MetaData & Record<string, any>
 
-    export type Split = MetaData & Record<string, any>
+    export type Split<T extends Record<string, any> = Record<string, any>> = MetaData & {answers: T}
 
     export type Id = string
     export type UUID = string
@@ -227,11 +227,15 @@ export namespace Kobo {
       _notes: Notes[]
       _validation_status:
         | {
-            timestamp: number
-            uid: Validation
-            by_whom: string
-          }
-        | {}
+        timestamp: number
+        uid: Validation
+        by_whom: string
+      }
+        | {
+        timestamp: undefined
+        uid: undefined
+        by_whom: undefined
+      }
       _submitted_by: any
       'formhub/uuid': string
       'meta/instanceId'?: string

@@ -5,7 +5,7 @@ import retry from 'promise-retry'
 import {AxiosError} from 'axios'
 import {KoboClientV1} from './KoboClientV1'
 import {KoboSubmissionFormatter} from '../helper/KoboSubmissionFormatter'
-import {js2xml, json2xml, xml2json} from 'xml-js'
+import {js2xml} from 'xml-js'
 import {v4 as uuidv4} from 'uuid'
 
 export class KoboClientV1Submission {

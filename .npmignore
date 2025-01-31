@@ -1,0 +1,18 @@
+src/
+tsconfig.json
+tsconfig.*.json
+.idea
+.env
+docs/
+test/
+ressources/
+
+# Ignore build configs
+release.sh
+jest.setup.js
+jest.config.js
+tsup.config.ts
+.eslintrc.js
+.prettierrc
+*.log
+node_modules/
