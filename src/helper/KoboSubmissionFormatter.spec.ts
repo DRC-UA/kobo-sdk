@@ -4,9 +4,7 @@ import {Kobo} from '../Kobo'
 
 describe('Formatter', function () {
   it('removeMetaData', function () {
-    expect(
-      KoboSubmissionFormatter.removeMetaData(fixture.data.submission),
-    ).toEqual({
+    expect(KoboSubmissionFormatter.removeMetaData(fixture.data.submission)).toEqual({
       oblast: 'CEJ',
       'family/family_name': 'Volodymyr',
       'family/location': [
@@ -100,9 +98,10 @@ describe('Formatter', function () {
 
   it('flattenObject', function () {
     expect(
-      (KoboSubmissionFormatter as any/**Bypass private*/).removeRedondanceInPath({
-        'base/staffs': [{'base/staffs/name': 'Rich'}, {'base/staffs/name': 'Mat'}],
-      }),
+      (KoboSubmissionFormatter as any) /**Bypass private*/
+        .removeRedondanceInPath({
+          'base/staffs': [{'base/staffs/name': 'Rich'}, {'base/staffs/name': 'Mat'}],
+        }),
     ).toEqual({
       'base/staffs': [{name: 'Rich'}, {name: 'Mat'}],
     })
@@ -156,84 +155,76 @@ describe('Formatter', function () {
         questionIndex: fixture.questionIndex,
         output: 'toInsert',
       }),
-    ).toEqual(
-      {
-        oblast: 'CEJ',
-        family: {
-          family_name: 'Volodymyr',
-          location: [
-            {
-              number: 1,
-              raion: {
-                raion_name: 'zvenyhorodskyi',
-                raion_iso: 'ISO1',
-              },
-              rooms: [
-                {
-                  room: 'kitchen',
-                },
-                {
-                  room: 'bathroom',
-                },
-              ],
+    ).toEqual({
+      oblast: 'CEJ',
+      family: {
+        family_name: 'Volodymyr',
+        location: [
+          {
+            number: 1,
+            raion: {
+              raion_name: 'zvenyhorodskyi',
+              raion_iso: 'ISO1',
             },
-            {
-              number: 2,
-              raion: {
-                raion_name: 'zolotoniskyi',
-                raion_iso: 'ISO2',
+            rooms: [
+              {
+                room: 'kitchen',
               },
-              rooms: [
-                {
-                  room: 'kitchen bathroom',
-                },
-                {
-                  room: 'kitchen bathroom bedroom',
-                },
-              ],
+              {
+                room: 'bathroom',
+              },
+            ],
+          },
+          {
+            number: 2,
+            raion: {
+              raion_name: 'zolotoniskyi',
+              raion_iso: 'ISO2',
             },
-          ],
-        },
+            rooms: [
+              {
+                room: 'kitchen bathroom',
+              },
+              {
+                room: 'kitchen bathroom bedroom',
+              },
+            ],
+          },
+        ],
       },
-    )
+    })
   })
 
   it('format to update with question names', function () {
     expect(
       KoboSubmissionFormatter.formatForApiBody({
-        data:
-          {
-            oblast: 'CEJ',
-            family_name: 'Volodymyr2',
-          },
+        data: {
+          oblast: 'CEJ',
+          family_name: 'Volodymyr2',
+        },
         questionIndex: fixture.questionIndex,
         output: 'toUpdate',
       }),
-    ).toEqual(
-      {
-        oblast: 'CEJ',
-        'family/family_name': 'Volodymyr2',
-      },
-    )
+    ).toEqual({
+      oblast: 'CEJ',
+      'family/family_name': 'Volodymyr2',
+    })
   })
 
   it('format to update with path', function () {
     expect(
       KoboSubmissionFormatter.formatForApiBody({
-        data:
-          {
-            oblast: 'CEJ',
-            'family/family_name': 'Volodymyr2',
-          },
+        data: {
+          oblast: 'CEJ',
+          'family/family_name': 'Volodymyr2',
+        },
         questionIndex: fixture.questionIndex,
         output: 'toUpdate',
       }),
-    ).toEqual(
-      {
-        oblast: 'CEJ',
-        'family/family_name': 'Volodymyr2',
-      },
-    )
+    ).toEqual({
+      oblast: 'CEJ',
+      'family/family_name': 'Volodymyr2',
+    })
   })
 
   it('isolateAnswersFromMetaData', function () {

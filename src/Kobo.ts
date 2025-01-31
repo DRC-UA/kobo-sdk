@@ -225,15 +225,17 @@ export namespace Kobo {
       _submission_time: Date
       _tags: Tags[]
       _notes: Notes[]
-      _validation_status: {
-        timestamp: number
-        uid: Validation
-        by_whom: string
-      } | {}
+      _validation_status:
+        | {
+            timestamp: number
+            uid: Validation
+            by_whom: string
+          }
+        | {}
       _submitted_by: any
-      'formhub/uuid': string,
-      'meta/instanceId'?: string,
-      'meta/instanceID'?: string,
+      'formhub/uuid': string
+      'meta/instanceId'?: string
+      'meta/instanceID'?: string
     }
 
     export interface Status {

@@ -20,8 +20,7 @@ export class KoboClientV2SubmissionFixedUpdated {
     private api: ApiClient,
     private log: Logger,
     private parent: KoboClientV2Submission,
-  ) {
-  }
+  ) {}
 
   private queues: Map<Kobo.FormId, KoboUpdateDataParams[]> = new Map()
   private locks: Map<Kobo.FormId, Promise<void>> = new Map()
@@ -47,7 +46,12 @@ export class KoboClientV2SubmissionFixedUpdated {
             concurrency: KoboClientV2SubmissionFixedUpdated.CONCURRENCY,
             size: KoboClientV2SubmissionFixedUpdated.BATCH_SIZE,
             data: params.submissionIds,
-            fn: (ids) => this.apiCall({...params, submissionIds: ids, questionIndex: KoboSubmissionFormatter.buildQuestionIndex(form)}),
+            fn: (ids) =>
+              this.apiCall({
+                ...params,
+                submissionIds: ids,
+                questionIndex: KoboSubmissionFormatter.buildQuestionIndex(form),
+              }),
           })
         } catch (e) {
           this.locks.delete(formId)
@@ -59,7 +63,9 @@ export class KoboClientV2SubmissionFixedUpdated {
     this.locks.delete(formId)
   }
 
-  private readonly apiCall = async (params: KoboUpdateDataParams & {questionIndex: QuestionIndex}): Promise<Kobo.Submission.UpdateResponse> => {
+  private readonly apiCall = async (
+    params: KoboUpdateDataParams & {questionIndex: QuestionIndex},
+  ): Promise<Kobo.Submission.UpdateResponse> => {
     const message = (status: 'Failed' | 'Success', e?: AxiosError) => {
       const name = params.formId
       const ids =
@@ -78,8 +84,7 @@ export class KoboClientV2SubmissionFixedUpdated {
               data,
               output: 'toUpdate',
               questionIndex: params.questionIndex,
-            })
-            ,
+            }),
           },
         },
       })

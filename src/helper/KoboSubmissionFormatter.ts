@@ -7,7 +7,6 @@ type Data = Record<string, Date | string | number | null | undefined | Data[]>
 export type QuestionIndex = Record<string, Kobo.Form.Question>
 
 export class KoboSubmissionFormatter {
-
   static readonly formatForApiBody = ({
     data,
     output,
@@ -21,7 +20,7 @@ export class KoboSubmissionFormatter {
   }): Data => {
     if (output === 'toInsert') {
       return seq([data])
-        .map(_ => this.removeMetaData(_))
+        .map((_) => this.removeMetaData(_))
         .map(this.removePath)
         .map((_) => this.mapValues(_, questionIndex))
         .map((_) => this.setFullQuestionPath(_, questionIndex))
@@ -30,7 +29,7 @@ export class KoboSubmissionFormatter {
         .last()!
     } else {
       return seq([data])
-        .map(_ => this.removeMetaData(_))
+        .map((_) => this.removeMetaData(_))
         .map(this.removePath)
         .map((_) => this.mapValues(_, questionIndex))
         .map((_) => this.setFullQuestionPath(_, questionIndex))
@@ -47,7 +46,10 @@ export class KoboSubmissionFormatter {
     }
   }
 
-  static readonly removeMetaData = (data: Record<string, any>, exceptions: (keyof Kobo.Submission.MetaData)[] = []): Data => {
+  static readonly removeMetaData = (
+    data: Record<string, any>,
+    exceptions: (keyof Kobo.Submission.MetaData)[] = [],
+  ): Data => {
     return Object.keys(data).reduce((acc, k) => {
       if (!this.metaKeys.has(k as any) || exceptions.includes(k as any)) {
         acc[k] = data[k]
@@ -171,7 +173,7 @@ export class KoboSubmissionFormatter {
 
   static readonly isolateAnswersFromMetaData = (data: Kobo.Submission): Kobo.Submission.Split => {
     const answers: any = {}
-    Object.keys(data).forEach(key => {
+    Object.keys(data).forEach((key) => {
       if (!this.metaKeys.has(key as any)) {
         answers[key] = data[key]
         delete data[key]

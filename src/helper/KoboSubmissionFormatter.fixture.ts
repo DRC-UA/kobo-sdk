@@ -35,73 +35,71 @@ export const fixture = (() => {
       _submitted_by: 'meal_drc_ddg_ukr',
     },
     submitBody: {
-      raw:
-        {
-          oblast: 'CEJ',
-          family_name: 'Volodymyr',
-          location: [
-            {
-              number: '1',
-              raion_name: 'zvenyhorodskyi',
-              raion_iso: 'ISO1',
-              rooms: [
-                {
-                  room: 'kitchen',
-                },
-                {
-                  room: 'bathroom',
-                },
-              ],
-            },
-            {
-              number: '2',
-              raion_name: 'zolotoniskyi',
-              raion_iso: 'ISO2',
-              rooms: [
-                {
-                  room: 'kitchen bathroom',
-                },
-                {
-                  room: 'kitchen bathroom bedroom',
-                },
-              ],
-            },
-          ],
-        },
-      withSection:
-        {
-          oblast: 'CEJ',
-          'family/family_name': 'Volodymyr',
-          'family/location': [
-            {
-              'family/location/number': '1',
-              'family/location/raion/raion_name': 'zvenyhorodskyi',
-              'family/location/raion/raion_iso': 'ISO1',
-              'family/location/rooms': [
-                {
-                  'family/location/rooms/room': 'kitchen',
-                },
-                {
-                  'family/location/rooms/room': 'bathroom',
-                },
-              ],
-            },
-            {
-              'family/location/number': '2',
-              'family/location/raion/raion_name': 'zolotoniskyi',
-              'family/location/raion/raion_iso': 'ISO2',
-              'family/location/rooms': [
-                {
-                  'family/location/rooms/room': 'kitchen bathroom',
-                },
-                {
-                  'family/location/rooms/room': 'kitchen bathroom bedroom',
-                },
-              ],
-            },
-          ],
-        },
-    }
+      raw: {
+        oblast: 'CEJ',
+        family_name: 'Volodymyr',
+        location: [
+          {
+            number: '1',
+            raion_name: 'zvenyhorodskyi',
+            raion_iso: 'ISO1',
+            rooms: [
+              {
+                room: 'kitchen',
+              },
+              {
+                room: 'bathroom',
+              },
+            ],
+          },
+          {
+            number: '2',
+            raion_name: 'zolotoniskyi',
+            raion_iso: 'ISO2',
+            rooms: [
+              {
+                room: 'kitchen bathroom',
+              },
+              {
+                room: 'kitchen bathroom bedroom',
+              },
+            ],
+          },
+        ],
+      },
+      withSection: {
+        oblast: 'CEJ',
+        'family/family_name': 'Volodymyr',
+        'family/location': [
+          {
+            'family/location/number': '1',
+            'family/location/raion/raion_name': 'zvenyhorodskyi',
+            'family/location/raion/raion_iso': 'ISO1',
+            'family/location/rooms': [
+              {
+                'family/location/rooms/room': 'kitchen',
+              },
+              {
+                'family/location/rooms/room': 'bathroom',
+              },
+            ],
+          },
+          {
+            'family/location/number': '2',
+            'family/location/raion/raion_name': 'zolotoniskyi',
+            'family/location/raion/raion_iso': 'ISO2',
+            'family/location/rooms': [
+              {
+                'family/location/rooms/room': 'kitchen bathroom',
+              },
+              {
+                'family/location/rooms/room': 'kitchen bathroom bedroom',
+              },
+            ],
+          },
+        ],
+      },
+    },
   }
 
   const dummyForm: Kobo.Form = {

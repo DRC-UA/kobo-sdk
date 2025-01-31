@@ -13,8 +13,7 @@ export class KoboClientV1Submission {
     private api: ApiClient,
     private parent: KoboClientV1,
     private log: Logger,
-  ) {
-  }
+  ) {}
 
   /**
    * @deprecated Submitting JSON data is unstable. I encountered a bug where submitted data couldn't be edited and instead created a duplicate submission.
@@ -33,7 +32,11 @@ export class KoboClientV1Submission {
     formId: Kobo.FormId
   }): Promise<Kobo.V1.SubmitResponse> => {
     const form = await this.parent.parent.v2.form.get({formId})
-    const formattedData = KoboSubmissionFormatter.formatForApiBody({data: data, output: 'toInsert', questionIndex: KoboSubmissionFormatter.buildQuestionIndex(form)})
+    const formattedData = KoboSubmissionFormatter.formatForApiBody({
+      data: data,
+      output: 'toInsert',
+      questionIndex: KoboSubmissionFormatter.buildQuestionIndex(form),
+    })
     const _uuid = uuid ?? (await this.parent.form.getAll().then((_) => _.find((f) => f.id_string === formId)?.uuid))
     if (!_uuid) throw new KoboError(`Form id ${formId} not found.`)
     return retry(
@@ -80,8 +83,12 @@ export class KoboClientV1Submission {
     formId: Kobo.FormId
   }): Promise<Kobo.V1.SubmitResponse> => {
     const form = await this.parent.parent.v2.form.get({formId})
-    const formattedData = KoboSubmissionFormatter.formatForApiBody({data: data, output: 'toInsert', questionIndex: KoboSubmissionFormatter.buildQuestionIndex(form)})
-    const uuid = (await this.parent.form.getAll().then((_) => _.find((f) => f.id_string === formId)?.uuid))
+    const formattedData = KoboSubmissionFormatter.formatForApiBody({
+      data: data,
+      output: 'toInsert',
+      questionIndex: KoboSubmissionFormatter.buildQuestionIndex(form),
+    })
+    const uuid = await this.parent.form.getAll().then((_) => _.find((f) => f.id_string === formId)?.uuid)
     if (!uuid) throw new KoboError(`Form id ${formId} not found.`)
 
     const xml = KoboClientV1Submission.formatXml({
@@ -108,11 +115,17 @@ export class KoboClientV1Submission {
     )
   }
 
-  static readonly formatXml = ({formhubUuid, version, instanceID, data, formId}: {
-    version?: string,
-    formId: Kobo.FormId,
-    formhubUuid: string,
-    data: Record<string, any>,
+  static readonly formatXml = ({
+    formhubUuid,
+    version,
+    instanceID,
+    data,
+    formId,
+  }: {
+    version?: string
+    formId: Kobo.FormId
+    formhubUuid: string
+    data: Record<string, any>
     instanceID: string
   }) => {
     const json = {
@@ -122,12 +135,12 @@ export class KoboClientV1Submission {
           version: '1 (2021-03-25 18:06:48)',
         },
         ...data,
-        'formhub': {
-          'uuid': formhubUuid,
+        formhub: {
+          uuid: formhubUuid,
         },
         __version__: version,
-        'meta': {
-          'instanceID': 'uuid:' + instanceID,
+        meta: {
+          instanceID: 'uuid:' + instanceID,
         },
       },
     }
