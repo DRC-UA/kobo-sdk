@@ -6,14 +6,19 @@ form management, making it easier to work with KoboToolbox in Node.js and browse
 **Optimized for TypeScript, with full type definitions.**
 
 ## Table of Contents
+
 - [Installation](#installation)
 - [Usage](#usage)
-  - [Initialization](#initialization)
-  - [Constructor parameters](#constructor-parameters)
-  - [Kobo servers index](#kobo-servers-index)
-  - [Insert new submission](#insert-new-submission)
-  - [Update submissions](#update-submissions)
-  - [Fetch submissions](#fetch-submissions)
+    - [Initialization](#initialization)
+    - [Constructor parameters](#constructor-parameters)
+    - [Kobo servers index](#kobo-servers-index)
+    - [Insert new submission](#insert-new-submission)
+    - [Update submissions](#update-submissions)
+    - [Fetch submissions](#fetch-submissions)
+- [Under-the-Hood Features Summary](#under-the-hood-features-summary)
+    - [Submission](#submission)
+    - [Update](#update)
+    - [Fetching](#fetching)
 - [TypeScript support](#typeScript-support)
 - [Contributing](#contributing)
 
@@ -57,10 +62,10 @@ const sdk = new KoboClient({
 
 **Only the question name** (without the `begin_group` path) is used as a key when submitting data.  
 The Kobo API expects grouped questions in a nested structure, but **this function automatically handles the formatting**.  
-If submission fails, it retries up to 8 times by default, which can be adjusted using the `retries` parameter.
+If submission fails, it retries up to 5 times by default, which can be adjusted using the `retries` parameter.
 
 ```ts
-await sdk.v1.submission.submit({
+await sdk.v1.submission.submitXml({
   formId: 'aM29e4jscqujByADmvDLrr',
   data: {
     question_name_type_text: 'answer',
@@ -122,8 +127,30 @@ sdk.v2.submission.get({
 })
 ```
 
+## Under-the-Hood Features Summary
+
+### **Submission**
+
+- Implemented the `/v1/submission.xml` endpoint, as JSON submissions cause bugs.
+- Automatically retrieves `formhub/uuid`.
+- Generates `instanceID`.
+- Formats the request body to match Kobo's complex nested structure.
+- Supports automatic retries.
+
+### **Update**
+
+- Controls update pacing to prevent server rejection.
+- Formats the request body using `$xpath` as keys.
+
+### **Fetching**
+
+- Manages data reconciliation when fetching over 30,000 submissions.
+- Provides a simple API for `start` and `end` query parameters.
+
 ## TypeScript support
-We strongly recommend using this **SDK** with **TypeScript** for full type support and preventing you from pulling your hair out.
+
+We strongly recommend using this **SDK** with **TypeScript** for full type support and preventing you from pulling your
+hair out.
 
 ![autocomplete-parameters.png](docs/autocomplete-parameters.png)
 ![autocomplete-response.png](docs/autocomplete-response.png)
