@@ -40,7 +40,7 @@ const sdk = new KoboClient({
 })
 ```
 
-### Constructor parameters
+### Constructor Parameters
 
 | Parameter        | Required | Description                                                                                                                                                   |
 |------------------|----------|---------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -50,7 +50,7 @@ const sdk = new KoboClient({
 | `ApiClientClass` | ❌        | Uses Axios by default. This parameter allows for a custom HTTP client.                                                                                        |
 | `log`            | ❌        | Logs output to the console by default.                                                                                                                        |
 
-### Kobo servers index
+### Kobo Servers Index
 
 | Server | V1 (kc)                       | V2 (kf)                    |
 |--------|-------------------------------|----------------------------|
@@ -58,7 +58,7 @@ const sdk = new KoboClient({
 | Global | https://kc.kobotoolbox.org    | https://kf.kobotoolbox.org |
 | DRC    | https://kc-kobo.drc.ngo       | https://kobo.drc.ngo/      |
 
-### Insert new submission
+### Insert New Submission
 
 **Only the question name** (without the `begin_group` path) is used as a key when submitting data.  
 The Kobo API expects grouped questions in a nested structure, but **this function automatically handles the formatting**.  
@@ -71,8 +71,7 @@ await sdk.v1.submission.submitXml({
     question_name_type_text: 'answer',
     question_name_type_integer_variant1: 1,
     question_name_type_integer_variant2: '1',
-    question_name_type_select_multiple_variant1: 'option1 option2',
-    question_name_type_select_multiple_variant2: ['option1', 'option2'],
+    question_name_type_select_multiple: 'option1 option2',
     question_name_type_select_one: 'option1',
     question_name_begin_repeat: [
       {question_name: 'answer1'},
@@ -85,7 +84,7 @@ await sdk.v1.submission.submitXml({
 })
 ```
 
-### Update submissions
+### Update Submissions
 
 **Only the question name** (without the `begin_group` path) is used as a key when submitting data.
 The Kobo API expects `$xpath` as a key, including `begin_group`s but **this function automatically handles the formatting**.
@@ -109,7 +108,7 @@ await sdk.v2.submission.update({
 })
 ```
 
-### Fetch submissions
+### Fetch Submissions
 
 Supports filtering `_submission_time` by range, limit, and offset.  
 The Kobo API limits responses to 30,000 submissions per request to prevent timeouts, **but** this function automatically
@@ -150,7 +149,7 @@ To retrieve the raw API response, use `sdk.v2.submission.getRaw` instead.
 - Manages data reconciliation when fetching over 30,000 submissions.
 - Provides a simple API for `start` and `end` query parameters.
 
-## TypeScript support
+## TypeScript Support
 
 We strongly recommend using this **SDK** with **TypeScript** for full type support and preventing you from pulling your
 hair out.
