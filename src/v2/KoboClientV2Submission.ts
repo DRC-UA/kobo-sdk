@@ -10,6 +10,7 @@ import {map} from '@alexandreannic/ts-utils'
 import axios from 'axios'
 import {KoboClientV2} from './KoboClientV2'
 import {KoboError} from '../KoboError'
+import {KoboSubmissionFormatter} from '../helper/KoboSubmissionFormatter'
 
 export class KoboClientV2Submission {
   constructor(
@@ -17,7 +18,8 @@ export class KoboClientV2Submission {
     private log: Logger,
     public parent: KoboClientV2,
     private editSdk = new KoboClientV2SubmissionFixedUpdated(api, log, this),
-  ) {}
+  ) {
+  }
 
   static readonly parseDate = (_: Date) => _.toISOString()
 
@@ -112,7 +114,7 @@ export class KoboClientV2Submission {
     return this.editSdk.enqueue(params)
   }
 
-  private readonly getRaw = (form: Kobo.Form.Id, {limit, offset, ...params}: Kobo.Submission.Filter = {}) => {
+  readonly getRaw = ({formId, filters = {}}: {formId: Kobo.Form.Id; filters?: Kobo.Submission.Filter}) => {
     const fetchPage = async ({
       limit = KoboClientV2Submission.MAX_KOBO_PAGESIZE,
       offset = 0,
@@ -120,27 +122,27 @@ export class KoboClientV2Submission {
     }: {
       limit?: number
       offset?: number
-      accumulated?: Array<Kobo.Submission>
-    }): Promise<Kobo.Paginate<Kobo.Submission>> => {
-      const start = map(params.start, (_) => KoboClientV2Submission.makeDateFilter('_submission_time', 'gte', _))
-      const end = map(params.end, (_) => KoboClientV2Submission.makeDateFilter('_submission_time', 'lte', _))
+      accumulated?: Array<Kobo.Submission.Raw>
+    }): Promise<Kobo.Paginate<Kobo.Submission.Raw>> => {
+      const start = map(filters.start, (_) => KoboClientV2Submission.makeDateFilter('_submission_time', 'gte', _))
+      const end = map(filters.end, (_) => KoboClientV2Submission.makeDateFilter('_submission_time', 'lte', _))
       const query = start && end ? {$and: [start, end]} : (start ?? end)
-      const response = await this.api.get<Kobo.Paginate<Kobo.Submission.MetaData & Record<string, any>>>(
-        `/v2/assets/${form}/data`,
-        {
-          qs: {
-            limit: limit,
-            start: offset,
-            query: query ? JSON.stringify(query) : undefined,
-          },
+      const response = await this.api.get<Kobo.Paginate<Kobo.Submission.Raw>>(`/v2/assets/${formId}/data`, {
+        qs: {
+          limit: limit,
+          start: offset,
+          query: query ? JSON.stringify(query) : undefined,
         },
-      )
+      })
       const results = [...accumulated, ...response.results]
       return results.length >= response.count
         ? {count: response.count, results}
         : fetchPage({offset: offset + response.results.length, accumulated: results})
     }
-    return fetchPage({limit, offset})
+    return fetchPage({limit: filters.limit, offset: filters.offset}).then((_) => {
+      _.results = _.results.map(KoboClientV2Submission.mapSubmission)
+      return _
+    })
   }
 
   /**
@@ -154,22 +156,25 @@ export class KoboClientV2Submission {
     formId: Kobo.Form.Id
     filters?: Kobo.Submission.Filter
   }): Promise<Kobo.Paginate<Kobo.Submission>> => {
-    return await this.getRaw(formId, filters).then((res) => {
+    return await this.getRaw({formId, filters}).then((res) => {
       return {
         ...res,
         results: res.results
-          .map((_) => {
-            _._id = '' + _._id
-            _._submission_time = new Date(_._submission_time)
-            if (_.start) _.start = new Date(_.start)
-            if (_.end) _.end = new Date(_.end)
-            return _
-          })
+          .map(KoboSubmissionFormatter.removePath)
+          .map(KoboSubmissionFormatter.isolateAnswersFromMetaData)
           .sort((a, b) => {
             return a._submission_time.getTime() - b._submission_time.getTime()
           }),
       }
     })
+  }
+
+  private static readonly mapSubmission = (_: Kobo.Submission.Raw): Kobo.Submission => {
+    _._id = '' + _._id
+    _._submission_time = new Date(_._submission_time)
+    if (_.start) _.start = new Date(_.start)
+    if (_.end) _.end = new Date(_.end)
+    return _ as any
   }
 
   readonly getAttachement = ({

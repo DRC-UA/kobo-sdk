@@ -127,6 +127,9 @@ sdk.v2.submission.get({
 })
 ```
 
+The function removes paths from keys and extracts answers from metadata.
+To retrieve the raw API response, use `sdk.v2.submission.getRaw` instead.
+
 ## Under-the-Hood Features Summary
 
 ### **Submission**

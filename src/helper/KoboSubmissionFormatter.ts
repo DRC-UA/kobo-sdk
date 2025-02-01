@@ -1,7 +1,7 @@
-import {seq} from '@alexandreannic/ts-utils'
+import {Obj, seq} from '@alexandreannic/ts-utils'
 import {Kobo} from '../Kobo'
 
-type Data = Record<string, Date | string | number | null | undefined | Data[]>
+type Data = any //Record<string, Date | string | number | null | undefined | Data[] | Record<string, any>>
 // type NestedData = Record<string, Date | string | number | null | undefined | Data[] | Data>
 
 export type QuestionIndex = Record<string, Kobo.Form.Question>
@@ -171,14 +171,14 @@ export class KoboSubmissionFormatter {
     '_submitted_by',
   ])
 
-  static readonly isolateAnswersFromMetaData = (data: Kobo.Submission): Kobo.Submission.Split => {
+  static readonly isolateAnswersFromMetaData = (data: Record<string, any>): Kobo.Submission.Split => {
     const answers: any = {}
-    Object.keys(data).forEach((key) => {
+    Obj.keys(data).forEach((key) => {
       if (!this.metaKeys.has(key as any)) {
         answers[key] = data[key]
         delete data[key]
       }
     })
-    return {...data, answers}
+    return {...data, answers} as any
   }
 }

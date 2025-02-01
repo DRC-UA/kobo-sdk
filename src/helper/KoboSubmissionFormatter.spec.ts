@@ -1,6 +1,7 @@
 import {KoboSubmissionFormatter} from './KoboSubmissionFormatter'
 import {fixture} from './KoboSubmissionFormatter.fixture'
 import {Kobo} from '../Kobo'
+import {KoboClientV2Submission} from '../v2/KoboClientV2Submission'
 
 describe('Formatter', function () {
   it('removeMetaData', function () {
@@ -261,6 +262,69 @@ describe('Formatter', function () {
       _notes: [],
       _validation_status: {},
       _submitted_by: 'meal_drc_ddg_ukr',
+    })
+  })
+
+  it('should clean raw submissions format', function () {
+    const _1 = KoboClientV2Submission.mapSubmission({
+      _id: '641173955',
+      'formhub/uuid': 'c658d6760a464e99a0e5e9b3cf1f3755',
+      date: '2025-02-25',
+      'user/firstname': 'Vlad',
+      'user/posts': [
+        {
+          'user/posts/title': 'How to build XLS Form',
+          'user/posts/description': 'Blablabla',
+          'user/posts/media': 'image',
+        },
+        {
+          'user/posts/title': 'How to submit using API',
+          'user/posts/description': 'Blablabla',
+          'user/posts/media': 'video',
+        },
+      ],
+      __version__: 'vEYb8b9pkTVbEpNLERCe23',
+      'meta/instanceID': 'uuid:10c77b00-2dba-40c4-ba7c-cbbeab0e5cbd',
+      _xform_id_string: 'aDpk4iBc9XKrUfUoeXFSQe',
+      _uuid: '10c77b00-2dba-40c4-ba7c-cbbeab0e5cbd',
+      _attachments: [],
+      _status: 'submitted_via_web' as unknown as Kobo.Submission.Status,
+      _geolocation: [null, null],
+      _submission_time: new Date('2025-02-01T13:51:39'),
+      _tags: [],
+      _notes: [],
+      _validation_status: {} as any,
+      _submitted_by: 'kobo_sdk_test',
+    })
+    const _2 = KoboSubmissionFormatter.removePath(_1)
+    const _3 = KoboSubmissionFormatter.isolateAnswersFromMetaData(_2)
+    expect(_3).toEqual({
+      _id: '641173955',
+      'formhub/uuid': 'c658d6760a464e99a0e5e9b3cf1f3755',
+      __version__: 'vEYb8b9pkTVbEpNLERCe23',
+      'meta/instanceID': 'uuid:10c77b00-2dba-40c4-ba7c-cbbeab0e5cbd',
+      _xform_id_string: 'aDpk4iBc9XKrUfUoeXFSQe',
+      _uuid: '10c77b00-2dba-40c4-ba7c-cbbeab0e5cbd',
+      _attachments: [],
+      _status: 'submitted_via_web',
+      _geolocation: [null, null],
+      _submission_time: new Date('2025-02-01T18:51:39.000Z'),
+      _tags: [],
+      _notes: [],
+      _validation_status: {},
+      _submitted_by: 'kobo_sdk_test',
+      answers: {
+        date: '2025-02-25',
+        firstname: 'Vlad',
+        posts: [
+          {title: 'How to build XLS Form', description: 'Blablabla', media: 'image'},
+          {
+            title: 'How to submit using API',
+            description: 'Blablabla',
+            media: 'video',
+          },
+        ],
+      },
     })
   })
 })

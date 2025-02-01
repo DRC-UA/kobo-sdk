@@ -31,7 +31,11 @@ export const fixture = (() => {
       _submission_time: new Date('2025-01-22T13:16:16'),
       _tags: [],
       _notes: [],
-      _validation_status: {},
+      _validation_status: {
+        timestamp: undefined,
+        uid: undefined,
+        by_whom: undefined,
+      },
       _submitted_by: 'meal_drc_ddg_ukr',
     },
     submitBody: {

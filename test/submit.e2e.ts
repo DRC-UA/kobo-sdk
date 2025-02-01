@@ -46,7 +46,7 @@ describe.only('Real API Submission', () => {
   it(
     'should submit',
     async function () {
-      const answers = await sdk.v2.submission.get({formId: env.FORM_ID})
+      const answers = await sdk.v2.submission.getRaw({formId: env.FORM_ID})
       const last = answers.results[answers.results.length - 1]
       expect(last['date']).toEqual('2024-01-01')
       expect(last['oblast']).toEqual('Kharkiv')
@@ -89,7 +89,7 @@ describe.only('Real API Submission', () => {
         },
       })
       const updatedSubmissions = await sdk.v2.submission
-        .get({formId: env.FORM_ID})
+        .getRaw({formId: env.FORM_ID})
         .then((_) => _.results.find((_) => _._id === last._id))
       if (updatedSubmissions) {
         expect(updatedSubmissions['oblast']).toEqual('Mykolaiv')
