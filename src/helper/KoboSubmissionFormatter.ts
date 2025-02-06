@@ -156,8 +156,6 @@ export class KoboSubmissionFormatter {
     'meta/instanceId',
     'meta/instanceID',
     '_id',
-    'start',
-    'end',
     '__version__',
     '_xform_id_string',
     '_uuid',

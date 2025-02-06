@@ -19,11 +19,13 @@
   },
   "dependencies": {
     "@alexandreannic/ts-utils": "^2.1.19",
+    "@types/form-data": "^2.5.2",
     "@types/promise-retry": "^1.1.6",
     "@types/qs": "^6.9.15",
     "axios": "1.7.9",
     "date-fns": "4.1.0",
     "dotenv": "^16.4.7",
+    "form-data": "^4.0.1",
     "promise-retry": "^2.0.1",
     "qs": "^6.12.1",
     "uuid": "^11.0.5",
@@ -38,6 +40,6 @@
     "prettier": "^3.4.2",
     "ts-jest": "^29.2.5",
     "tsup": "^8.3.6",
-    "typescript": "^5.6.2"
+    "typescript": "^5.7.3"
   }
 }

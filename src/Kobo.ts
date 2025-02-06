@@ -228,15 +228,15 @@ export namespace Kobo {
       _notes: Notes[]
       _validation_status:
         | {
-            timestamp: number
-            uid: Validation
-            by_whom: string
-          }
+        timestamp: number
+        uid: Validation
+        by_whom: string
+      }
         | {
-            timestamp: undefined
-            uid: undefined
-            by_whom: undefined
-          }
+        timestamp: undefined
+        uid: undefined
+        by_whom: undefined
+      }
       _submitted_by: any
       'formhub/uuid': string
       'meta/instanceId'?: string
@@ -261,6 +261,7 @@ export namespace Kobo {
       download_url: string
       filename: string
       download_small_url: string
+      question_xpath: string
       id: number
     }
   }
