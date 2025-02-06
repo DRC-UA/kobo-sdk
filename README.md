@@ -61,12 +61,17 @@ const sdk = new KoboClient({
 ### Insert New Submission
 
 **Only the question name** (without the `begin_group` path) is used as a key when submitting data.  
-The Kobo API expects grouped questions in a nested structure, but **this function automatically handles the formatting**.  
+The Kobo API expects grouped questions in a nested structure, but **this function automatically handles the formatting
+**.  
 If submission fails, it retries up to 5 times by default, which can be adjusted using the `retries` parameter.
 
 ```ts
 await sdk.v1.submission.submitXml({
   formId: 'aM29e4jscqujByADmvDLrr',
+  attachments: [{
+    name: 'filename as indicated in the answers',
+    url: 'URL to the file. You can also use `path` instead of `url` to select local file.',
+  }],
   data: {
     question_name_type_text: 'answer',
     question_name_type_integer_variant1: 1,
@@ -87,7 +92,8 @@ await sdk.v1.submission.submitXml({
 ### Update Submissions
 
 **Only the question name** (without the `begin_group` path) is used as a key when submitting data.
-The Kobo API expects `$xpath` as a key, including `begin_group`s but **this function automatically handles the formatting**.
+The Kobo API expects `$xpath` as a key, including `begin_group`s but **this function automatically handles the
+formatting**.
 
 **Note:**
 
@@ -151,8 +157,9 @@ To retrieve the raw API response, use `sdk.v2.submission.getRaw` instead.
 
 ## TypeScript Support
 
-We strongly recommend using this **SDK** with **TypeScript** for full type support and preventing you from pulling your
-hair out.
+We highly recommend using this **SDK** with **TypeScript** instead of JavaScript for full type support and to save yourself from
+unnecessary frustration. **If you're not a developer** or unfamiliar with TypeScript, don’t worry, the type system will guide
+you along the way.
 
 ![autocomplete-parameters.png](docs/autocomplete-parameters.png)
 ![autocomplete-response.png](docs/autocomplete-response.png)
