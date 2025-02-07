@@ -1,8 +1,6 @@
 # Kobo-SDK ![npm](https://img.shields.io/npm/v/kobo-sdk)
 
-A TypeScript SDK for interacting with the [KoboToolbox](https://www.kobotoolbox.org/) API. This library simplifies
-authentication, data retrieval, and
-form management, making it easier to work with KoboToolbox in Node.js and browser environments.
+A TypeScript SDK for seamlessly interacting with the [KoboToolbox](https://www.kobotoolbox.org/) API, abstracting its complexities. 
 **Optimized for TypeScript, with full type definitions.**
 
 ## Table of Contents
@@ -61,8 +59,8 @@ const sdk = new KoboClient({
 ### Insert New Submission
 
 **Only the question name** (without the `begin_group` path) is used as a key when submitting data.  
-The Kobo API expects grouped questions in a nested structure, but **this function automatically handles the formatting
-**.  
+The Kobo API expects grouped questions in a nested structure, but
+**this function automatically handles the formatting**.  
 If submission fails, it retries up to 5 times by default, which can be adjusted using the `retries` parameter.
 
 ```ts
@@ -70,19 +68,19 @@ await sdk.v1.submission.submitXml({
   formId: 'aM29e4jscqujByADmvDLrr',
   attachments: [{
     name: 'filename as indicated in the answers',
-    url: 'URL to the file. You can also use `path` instead of `url` to select local file.',
+    url: 'URL to the file. Altenarively you can use `path` instead of `url` to select a local file.',
   }],
   data: {
-    question_name_type_text: 'answer',
-    question_name_type_integer_variant1: 1,
-    question_name_type_integer_variant2: '1',
-    question_name_type_select_multiple: 'option1 option2',
-    question_name_type_select_one: 'option1',
-    question_name_begin_repeat: [
-      {question_name: 'answer1'},
+    question_text: 'answer',
+    question_integer_variant1: 1,
+    question_integer_variant2: '1',
+    question_select_multiple: 'option1 option2',
+    question_select_one: 'option1',
+    question_begin_repeat: [
+      {question: 'answer1'},
       {
-        question_name: 'answer2',
-        question_name_nested_repeat: [{question_name: 'answer'}],
+        question: 'answer2',
+        question_nested_repeat: [{question_nested: 'answer'}],
       },
     ],
   },
@@ -92,13 +90,13 @@ await sdk.v1.submission.submitXml({
 ### Update Submissions
 
 **Only the question name** (without the `begin_group` path) is used as a key when submitting data.
-The Kobo API expects `$xpath` as a key, including `begin_group`s but **this function automatically handles the
-formatting**.
+The Kobo API expects `$xpath` as a key, including `begin_group`s but
+**this function automatically handles the formatting**.
 
 **Note:**
 
-- The Kobo API fails if it receives too many updates in a short time **BUT**
-  This function automatically splits requests into smaller chunks and queues calls, ensuring updates are throttled at a
+- The Kobo API fails if it receives too many updates in a short time, **but**
+  this function automatically splits requests into smaller chunks and queues calls, ensuring updates are throttled at a
   pace the Kobo API can handle.
 
 - If submission fails, it retries up to 8 times by default, which can be adjusted using the `retries` parameter.
@@ -108,8 +106,8 @@ await sdk.v2.submission.update({
   formId: 'aM29e4jscqujByADmvDLrr',
   submissionIds: ['1', '2'],
   data: {
-    question_name_type_text: 'New answer',
-    question_name_type_select_multiple: 'option1 option2 option3',
+    question_text: 'New answer',
+    question_select_multiple: 'option1 option2 option3',
   },
 })
 ```
@@ -139,7 +137,7 @@ To retrieve the raw API response, use `sdk.v2.submission.getRaw` instead.
 
 ### **Submission**
 
-- Implemented the `/v1/submission.xml` endpoint, as JSON submissions cause bugs.
+- Implements the `/v1/submission.xml` endpoint, as JSON submissions cause bugs.
 - Automatically retrieves `formhub/uuid`.
 - Generates `instanceID`.
 - Formats the request body to match Kobo's complex nested structure.
@@ -157,9 +155,10 @@ To retrieve the raw API response, use `sdk.v2.submission.getRaw` instead.
 
 ## TypeScript Support
 
-We highly recommend using this **SDK** with **TypeScript** instead of JavaScript for full type support and to save yourself from
-unnecessary frustration. **If you're not a developer** or unfamiliar with TypeScript, don’t worry, the type system will guide
-you along the way.
+We highly recommend using this **SDK** with **TypeScript** instead of JavaScript for full type support and to save
+yourself from unnecessary frustration.
+**If you're not a developer** or unfamiliar with TypeScript, don’t worry, the type system will
+guide you along the way.
 
 ![autocomplete-parameters.png](docs/autocomplete-parameters.png)
 ![autocomplete-response.png](docs/autocomplete-response.png)
