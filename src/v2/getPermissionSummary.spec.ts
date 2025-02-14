@@ -85,14 +85,11 @@ describe('getPermissionSummary', () => {
 
   it('e2e generating CSV', async () => {
     const forms = await sdk.v2.form.getAll()
-    const permissions = forms.results
-      .flatMap(form =>
-        sdk.v2.form.getPermissionSummary(form).map(permission => ({
-          ...permission,
-          formName: form.name,
-        })),
-      )
-    const csv = permissions.map(_ => [_.formName, _.userName, _.permissions.join(' ')].join(',')).join('\n')
-    console.error(csv)
+    forms.results.forEach(form => {
+      const permissions = sdk.v2.form.getPermissionSummary(form)
+      permissions.forEach(permission => {
+        console.log([form.name, permission.userName, permission.permissions.join(' ')].join(','))
+      })
+    })
   })
 })

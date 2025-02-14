@@ -13,6 +13,7 @@ A TypeScript SDK for seamlessly interacting with the [KoboToolbox](https://www.k
     - [Insert new submission](#insert-new-submission)
     - [Update submissions](#update-submissions)
     - [Fetch submissions](#fetch-submissions)
+    - [Get form permissions](#get-form-permissions)
 - [Under-the-Hood Features Summary](#under-the-hood-features-summary)
     - [Submission](#submission)
     - [Update](#update)
@@ -22,7 +23,9 @@ A TypeScript SDK for seamlessly interacting with the [KoboToolbox](https://www.k
 
 ## Installation
 
-```npm install kobo-sdk```
+```
+npm install kobo-sdk
+```
 
 ## Usage
 
@@ -61,7 +64,7 @@ const sdk = new KoboClient({
 **Only the question name** (without the `begin_group` path) is used as a key when submitting data.  
 The Kobo API expects grouped questions in a nested structure, but
 **this function automatically handles the formatting**.  
-If submission fails, it retries up to 5 times by default, which can be adjusted using the `retries` parameter.
+If submission fails, it retries up to **5** times by default, which can be adjusted using the `retries` parameter.
 
 ```ts
 await sdk.v1.submission.submitXml({
@@ -93,13 +96,13 @@ await sdk.v1.submission.submitXml({
 The Kobo API expects `$xpath` as a key, including `begin_group`s but
 **this function automatically handles the formatting**.
 
-**Note:**
+If submission fails, it retries up to **5** times by default, which can be adjusted using the `retries` parameter.
 
-- The Kobo API fails if it receives too many updates in a short time, **but**
+> [!NOTE]
+> The **Kobo API fails** if it receives too many updates in a short time, **but**
   this function automatically splits requests into smaller chunks and queues calls, ensuring updates are throttled at a
   pace the Kobo API can handle.
 
-- If submission fails, it retries up to 8 times by default, which can be adjusted using the `retries` parameter.
 
 ```ts
 await sdk.v2.submission.update({
@@ -115,7 +118,7 @@ await sdk.v2.submission.update({
 ### Fetch Submissions
 
 Supports filtering `_submission_time` by range, limit, and offset.  
-The Kobo API limits responses to 30,000 submissions per request to prevent timeouts, **but** this function automatically
+The Kobo API limits responses to **30,000 submissions** per request to prevent timeouts, **but** this function automatically
 splits API calls into chunks and merges results, allowing retrieval of any number of submissions seamlessly.
 
 ```ts
@@ -129,9 +132,15 @@ sdk.v2.submission.get({
   }
 })
 ```
+> [!IMPORTANT]
+> The function removes paths from keys and extracts answers from metadata. To retrieve the raw API response, use `sdk.v2.submission.getRaw` instead.
 
-The function removes paths from keys and extracts answers from metadata.
-To retrieve the raw API response, use `sdk.v2.submission.getRaw` instead.
+### Get form permissions
+```ts
+const form = await sdk.v2.form.get('aM29e4jscqujByADmvDLrr')
+const permissions = sdk.v2.form.getPermissionSummary(form)
+// > [{userName: 'user1', permissions: ['add_submissions delete_submissions manage_asset validate_submissions view_asset view_submissions']}]
+```
 
 ## Under-the-Hood Features Summary
 
