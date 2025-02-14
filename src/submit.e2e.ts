@@ -1,4 +1,4 @@
-import {KoboClient} from '../src'
+import {KoboClient} from './index'
 import dotenv from 'dotenv'
 import {z} from 'zod'
 import {duration} from '@alexandreannic/ts-utils'
@@ -11,9 +11,9 @@ const envSchema = z.object({
   KOBO_TOKEN: z.string(),
   FORM_ID: z.string(),
 })
-const env = envSchema.parse(process.env)
+export const env = envSchema.parse(process.env)
 
-const sdk = new KoboClient({
+export const sdk = new KoboClient({
   urlv2: env.KOBO_URLV2,
   urlv1: env.KOBO_URLV1,
   token: env.KOBO_TOKEN,

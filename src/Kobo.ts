@@ -167,7 +167,7 @@ export namespace Kobo {
       // owner: "https://kobo.humanitarianresponse.info/api/v2/users/alexandre_annic_drc/"
       owner__username: string
       // parent: null
-      // permissions: [{,…}, {,…}, {,…}, {,…}, {,…}, {,…}, {,…}, {,…}]
+      permissions: Permission[]
       // settings: {sector: {label: "Humanitarian - Coordination / Information Management",…},…}
       status: 'private'
       subscribers_count: 0
@@ -177,6 +177,57 @@ export namespace Kobo {
       url: string
       version_id: string
       files: File[]
+    }
+  }
+
+  export type Permission = Permission.T
+  export namespace Permission {
+
+    export enum Label {
+      'Add submissions' = 'Add submissions',
+      'Edit form' = 'Edit form',
+      'Edit submissions' = 'Edit submissions',
+      'Delete submissions' = 'Delete submissions',
+      'Manage project' = 'Manage project',
+      'Validate submissions' = 'Validate submissions',
+      'View form' = 'View form',
+      'View submissions' = 'View submissions',
+    }
+
+    export enum Code {
+      add_submissions = 'add_submissions',
+      change_asset = 'change_asset',
+      change_submissions = 'change_submissions',
+      delete_submissions = 'delete_submissions',
+      manage_asset = 'manage_asset',
+      validate_submissions = 'validate_submissions',
+      view_asset = 'view_asset',
+      view_submissions = 'view_submissions',
+      partial_submissions = 'partial_submissions',
+    }
+
+    export type T = {
+      label: Label | {
+        change_submissions: string // "Edit submissions only from specific users"
+        default: string // "Act on submissions only from specific users"
+        delete_submissions: string // "Delete submissions only from specific users"
+        validate_submissions: string // "Validate submissions only from specific users"
+        view_submissions: string // "View submissions only from specific users"
+      }
+      partial_permissions?: {
+        filters: string // [{introduction/staff_code: "CEJ011"}]
+        url: string// "https://kobo.drc.ngo/api/v2/permissions/add_submissions/"
+      }[]
+      permission: string // "https://kobo.drc.ngo/api/v2/permissions/change_asset/"
+      url: string // "https://kobo.drc.ngo/api/v2/assets/a62ZpworuN4nFLznsUej8r/permission-assignments/p7H7SZR4KRqsJ9EesKMGpC/"
+      user: string // "https://kobo.drc.ngo/api/v2/users/meal_drc_ddg_ukr/"
+    }
+
+    export type Level = 'full' | 'partial' | 'none'
+
+    export type Summary = {
+      userName: string
+      permissions: Code[]
     }
   }
 

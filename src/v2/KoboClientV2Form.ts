@@ -1,11 +1,13 @@
 import {ApiClient} from '../api-client/ApiClient'
 import {Kobo, Logger} from '../Kobo'
+import {fnSwitch, Obj, seq} from '@alexandreannic/ts-utils'
 
 export class KoboClientV2Form {
   constructor(
     private api: ApiClient,
     private log: Logger,
-  ) {}
+  ) {
+  }
 
   readonly getAll = ({limit = 2000}: {limit?: number} = {}) => {
     return this.api.get<Kobo.Paginate<Kobo.Form.Light>>(`/v2/assets/?q=asset_type%3Asurvey&limit=${limit}`)
@@ -20,6 +22,18 @@ export class KoboClientV2Form {
       return _
     })
   }
+
+  static readonly getPermissionSummary = (form: Kobo.Form): Kobo.Permission.Summary[] => {
+    const index = seq(form.permissions).map(_ => {
+      return {
+        userName: _.user.split('/').slice(-2, -1)[0],
+        permissions: _.permission.split('/').slice(-2, -1)[0],
+      }
+    }).groupByAndApply(_ => _.userName, _ => _.map(_ => _.permissions))
+    return Object.entries(index).map(([userName, permissions]) => ({userName, permissions: permissions.get() as Kobo.Permission.Code[]}))
+  }
+
+  readonly getPermissionSummary = KoboClientV2Form.getPermissionSummary
 
   readonly getByVersion = ({formId, versionId}: {formId: Kobo.Form.Id; versionId: string}) => {
     return this.api.get<Kobo.Form>(`/v2/assets/${formId}/versions/${versionId}`)

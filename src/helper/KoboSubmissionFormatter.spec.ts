@@ -266,7 +266,7 @@ describe('Formatter', function () {
   })
 
   it('should clean raw submissions format', function () {
-    const _1 = KoboClientV2Submission.mapSubmission({
+    const _1 = (KoboClientV2Submission as any).mapSubmission({
       _id: '641173955',
       'formhub/uuid': 'c658d6760a464e99a0e5e9b3cf1f3755',
       date: '2025-02-25',
