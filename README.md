@@ -13,6 +13,7 @@ A TypeScript SDK for seamlessly interacting with the [KoboToolbox](https://www.k
     - [Insert new submission](#insert-new-submission)
     - [Update submissions](#update-submissions)
     - [Fetch submissions](#fetch-submissions)
+    - [Get form permissions](#get-form-permissions)
 - [Under-the-Hood Features Summary](#under-the-hood-features-summary)
     - [Submission](#submission)
     - [Update](#update)
@@ -22,7 +23,9 @@ A TypeScript SDK for seamlessly interacting with the [KoboToolbox](https://www.k
 
 ## Installation
 
-```npm install kobo-sdk```
+```
+npm install kobo-sdk
+```
 
 ## Usage
 
@@ -132,6 +135,13 @@ sdk.v2.submission.get({
 
 The function removes paths from keys and extracts answers from metadata.
 To retrieve the raw API response, use `sdk.v2.submission.getRaw` instead.
+
+### Get form permissions
+```ts
+const form = await sdk.v2.form.get('aM29e4jscqujByADmvDLrr')
+const permissions = sdk.v2.form.getPermissionSummary(form)
+// > [{userName: 'user1', permissions: ['add_submissions delete_submissions manage_asset validate_submissions view_asset view_submissions']}]
+```
 
 ## Under-the-Hood Features Summary
 
