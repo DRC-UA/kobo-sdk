@@ -115,6 +115,7 @@ export class KoboClientV2Submission {
   }
 
   readonly getRaw = ({formId, filters = {}}: {formId: Kobo.Form.Id; filters?: Kobo.Submission.Filter}) => {
+
     const fetchPage = async ({
       limit = KoboClientV2Submission.MAX_KOBO_PAGESIZE,
       offset = 0,
@@ -135,7 +136,8 @@ export class KoboClientV2Submission {
         },
       })
       const results = [...accumulated, ...response.results]
-      return results.length >= response.count
+      const everythingFetched = results.length >= (filters.limit ?? response.count - (filters.offset ?? 0))
+      return everythingFetched
         ? {count: response.count, results}
         : fetchPage({offset: offset + response.results.length, accumulated: results})
     }
