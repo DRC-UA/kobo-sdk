@@ -1,4 +1,4 @@
-import {Obj, seq} from '@alexandreannic/ts-utils'
+import {Obj, seq} from '@axanc/ts-utils'
 import {Kobo} from '../Kobo'
 
 type Data = any //Record<string, Date | string | number | null | undefined | Data[] | Record<string, any>>

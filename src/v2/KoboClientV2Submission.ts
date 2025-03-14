@@ -6,7 +6,7 @@ import {
   KoboUpdateDataParamsData,
 } from './KoboClientV2SubmissionFixedUpdated'
 import {queuify} from '../helper/Utils'
-import {map} from '@alexandreannic/ts-utils'
+import {map} from '@axanc/ts-utils'
 import axios from 'axios'
 import {KoboClientV2} from './KoboClientV2'
 import {KoboError} from '../KoboError'

@@ -1,4 +1,4 @@
-import {chunkify} from '@alexandreannic/ts-utils'
+import {chunkify} from '@axanc/ts-utils'
 
 export const queuify = <T, P extends any[], M>({
   run,

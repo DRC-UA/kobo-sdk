@@ -1,7 +1,7 @@
 import {AxiosError} from 'axios'
 import {Kobo, Logger} from '../Kobo'
 import {ApiClient} from '../api-client/ApiClient'
-import {chunkify} from '@alexandreannic/ts-utils'
+import {chunkify} from '@axanc/ts-utils'
 import {KoboClientV2Submission} from './KoboClientV2Submission'
 import {KoboSubmissionFormatter, QuestionIndex} from '../helper/KoboSubmissionFormatter'
 

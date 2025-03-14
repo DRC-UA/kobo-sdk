@@ -1,7 +1,7 @@
 import {KoboClient} from './index'
 import dotenv from 'dotenv'
 import {z} from 'zod'
-import {duration} from '@alexandreannic/ts-utils'
+import {duration} from '@axanc/ts-utils'
 
 dotenv.config()
 
