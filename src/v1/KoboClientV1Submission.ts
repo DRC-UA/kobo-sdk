@@ -7,8 +7,6 @@ import {KoboClientV1} from './KoboClientV1'
 import {KoboSubmissionFormatter} from '../helper/KoboSubmissionFormatter'
 import {js2xml} from 'xml-js'
 import {v4 as uuidv4} from 'uuid'
-import * as fs from 'node:fs'
-import path from 'node:path'
 import FormData from 'form-data'
 
 export class KoboClientV1Submission {
@@ -129,6 +127,11 @@ export class KoboClientV1Submission {
             contentType: response.headers['content-type'] || 'application/octet-stream',
           })
         } else if (attachment.path) {
+          const isBrowser = typeof globalThis !== 'undefined' && 'window' in globalThis
+          if (isBrowser) {
+            throw new Error('Cannot read file from path in browser environment.')
+          }
+          const fs = require('node:fs')
           if (!fs.existsSync(attachment.path)) {
             throw new Error(`File does not exist: ${attachment.path}`)
           }
