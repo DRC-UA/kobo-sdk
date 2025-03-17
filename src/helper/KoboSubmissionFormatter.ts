@@ -135,14 +135,14 @@ export class KoboSubmissionFormatter {
     switch (type) {
       case 'integer':
       case 'decimal':
-        return Number.isInteger(value) ? Number(value) : Number(value)
+        return String(value)
       case 'date':
       case 'datetime':
       case 'start':
       case 'end':
         return this.formatDate(value)
       default:
-        return String(value).trim()
+        return typeof value === 'number' ? String(value) : String(value).trim()
     }
   }
 
