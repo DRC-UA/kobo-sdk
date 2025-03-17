@@ -142,7 +142,7 @@ export class KoboSubmissionFormatter {
       case 'end':
         return this.formatDate(value)
       default:
-        return typeof value === 'number' ? String(value) : String(value).trim()
+        return String(value).trim()
     }
   }
 
