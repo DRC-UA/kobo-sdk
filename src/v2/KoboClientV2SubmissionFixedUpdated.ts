@@ -1,9 +1,9 @@
 import {AxiosError} from 'axios'
 import {Kobo, Logger} from '../Kobo'
-import {ApiClient} from '../api-client/ApiClient'
 import {chunkify} from '@axanc/ts-utils'
 import {KoboClientV2Submission} from './KoboClientV2Submission'
 import {KoboSubmissionFormatter, QuestionIndex} from '../helper/KoboSubmissionFormatter'
+import {IApiClient} from '../KoboClient'
 
 export type KoboUpdateDataParamsData = Record<string, string | string[] | number | null | undefined>
 export type KoboUpdateDataParams<TData extends KoboUpdateDataParamsData = any> = {
@@ -17,7 +17,7 @@ export class KoboClientV2SubmissionFixedUpdated {
   static readonly CONCURRENCY = 12
 
   constructor(
-    private api: ApiClient,
+    private api: IApiClient,
     private log: Logger,
     private parent: KoboClientV2Submission,
   ) {}

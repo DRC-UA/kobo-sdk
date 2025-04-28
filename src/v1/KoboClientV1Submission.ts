@@ -1,4 +1,3 @@
-import {ApiClient} from '../api-client/ApiClient'
 import {Kobo, Logger} from '../Kobo'
 import {KoboError} from '../KoboError'
 import retry from 'promise-retry'
@@ -8,10 +7,11 @@ import {KoboSubmissionFormatter} from '../helper/KoboSubmissionFormatter'
 import {js2xml} from 'xml-js'
 import {v4 as uuidv4} from 'uuid'
 import FormData from 'form-data'
+import {IApiClient} from '../KoboClient'
 
 export class KoboClientV1Submission {
   constructor(
-    private api: ApiClient,
+    private api: IApiClient,
     private parent: KoboClientV1,
     private log: Logger,
   ) {}

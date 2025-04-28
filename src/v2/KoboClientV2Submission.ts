@@ -1,24 +1,21 @@
-import {ApiClient} from '../api-client/ApiClient'
 import {Kobo, Logger} from '../Kobo'
-import {
-  KoboClientV2SubmissionFixedUpdated,
-  KoboUpdateDataParams,
-  KoboUpdateDataParamsData,
-} from './KoboClientV2SubmissionFixedUpdated'
+import {KoboClientV2SubmissionFixedUpdated, KoboUpdateDataParams, KoboUpdateDataParamsData} from './KoboClientV2SubmissionFixedUpdated'
 import {queuify} from '../helper/Utils'
 import {map} from '@axanc/ts-utils'
 import axios from 'axios'
 import {KoboClientV2} from './KoboClientV2'
 import {KoboError} from '../KoboError'
 import {KoboSubmissionFormatter} from '../helper/KoboSubmissionFormatter'
+import {IApiClient} from '../KoboClient'
 
 export class KoboClientV2Submission {
   constructor(
-    private api: ApiClient,
+    private api: IApiClient,
     private log: Logger,
     public parent: KoboClientV2,
     private editSdk = new KoboClientV2SubmissionFixedUpdated(api, log, this),
-  ) {}
+  ) {
+  }
 
   static readonly parseDate = (_: Date) => _.toISOString()
 

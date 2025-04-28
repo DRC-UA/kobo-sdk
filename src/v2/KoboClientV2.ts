@@ -1,13 +1,12 @@
 import {Logger} from '../Kobo'
-import {ApiClient} from '../api-client/ApiClient'
 import {KoboClientV2Submission} from './KoboClientV2Submission'
 import {KoboClientV2Form} from './KoboClientV2Form'
 import {KoboClientV2Hook} from './KoboClientV2Hook'
-import {KoboClient} from '../KoboClient'
+import {IApiClient, KoboClient} from '../KoboClient'
 
 export class KoboClientV2 {
   constructor(
-    private api: ApiClient,
+    private api: IApiClient,
     public parent: KoboClient,
     private log: Logger,
   ) {

@@ -1,16 +1,35 @@
 import {KoboClientV2} from './v2/KoboClientV2'
 import {KoboClientV1} from './v1/KoboClientV1'
-import {ApiClient, ApiClientParams} from './api-client/ApiClient'
+import {ApiClient, ApiClientParams, RequestOption} from './api-client/ApiClient'
 import {Logger} from './Kobo'
 
 const defaultLogger: Logger = console
+
+export interface IApiClient {
+  params: Pick<ApiClientParams, 'baseUrl' | 'headers'>
+  
+  get: <T = any>(uri: string, options?: RequestOption) => Promise<T>
+
+  post: <T = any>(uri: string, options?: RequestOption) => Promise<T>
+
+  delete: <T = any>(uri: string, options?: RequestOption) => Promise<T>
+
+  put: <T = any>(uri: string, options?: RequestOption) => Promise<T>
+
+  patch: <T = any>(uri: string, options?: RequestOption) => Promise<T>
+}
 
 export class KoboClient {
   constructor({
     urlv1,
     urlv2,
     token,
-    ApiClientClass = ApiClient,
+    client = (baseUrl: string) => new ApiClient({
+      baseUrl: baseUrl + '/api',
+      headers: {
+        Authorization: KoboClient.makeAuthorizationHeader(token),
+      },
+    }),
     log = defaultLogger,
   }: {
     /** kc_url*/
@@ -18,29 +37,11 @@ export class KoboClient {
     /** kf_url*/
     urlv2: string
     token: string
-    ApiClientClass?: new (_: ApiClientParams) => ApiClient
+    client?: (baseUrl: string) => IApiClient
     log?: Logger
   }) {
-    this.v1 = new KoboClientV1(
-      new ApiClientClass({
-        baseUrl: urlv1 + '/api',
-        headers: {
-          Authorization: KoboClient.makeAuthorizationHeader(token),
-        },
-      }),
-      this,
-      log,
-    )
-    this.v2 = new KoboClientV2(
-      new ApiClientClass({
-        baseUrl: urlv2 + '/api',
-        headers: {
-          Authorization: KoboClient.makeAuthorizationHeader(token),
-        },
-      }),
-      this,
-      log,
-    )
+    this.v1 = new KoboClientV1(client(urlv1), this, log)
+    this.v2 = new KoboClientV2(client(urlv2), this, log)
   }
 
   readonly v1: KoboClientV1

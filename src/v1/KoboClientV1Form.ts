@@ -1,9 +1,10 @@
 import {ApiClient} from '../api-client/ApiClient'
 import {Kobo, Logger} from '../Kobo'
+import {IApiClient} from '../KoboClient'
 
 export class KoboClientV1Form {
   constructor(
-    private api: ApiClient,
+    private api: IApiClient,
     private log: Logger,
   ) {}
 

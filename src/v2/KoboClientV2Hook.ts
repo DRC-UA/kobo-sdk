@@ -1,11 +1,13 @@
 import {Kobo, Logger} from '../Kobo'
 import {ApiClient} from '../api-client/ApiClient'
+import {IApiClient} from '../KoboClient'
 
 export class KoboClientV2Hook {
   constructor(
-    private api: ApiClient,
+    private api: IApiClient,
     private log: Logger,
-  ) {}
+  ) {
+  }
 
   readonly get = ({formId}: {formId: Kobo.Form.Id}): Promise<Kobo.Paginate<Kobo.Hook>> => {
     return this.api.get(`/v2/assets/${formId}/hooks/`)
