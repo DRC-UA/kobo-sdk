@@ -14,8 +14,7 @@ export class KoboClientV1Submission {
     private api: ApiClient,
     private parent: KoboClientV1,
     private log: Logger,
-  ) {
-  }
+  ) {}
 
   /**
    * @deprecated Submitting JSON data is unstable. I encountered a bug where submitted data couldn't be edited and instead created a duplicate submission.
@@ -88,10 +87,7 @@ export class KoboClientV1Submission {
   }: {
     attachments?: ({
       name: string
-    } & (
-      | {url: string; path?: never}
-      | {path: string; url?: never}
-      ))[]
+    } & ({url: string; path?: never} | {path: string; url?: never}))[]
     retries?: number
     data: Partial<T>
     formId: Kobo.FormId
@@ -113,36 +109,38 @@ export class KoboClientV1Submission {
       version: form.version_id,
     })
 
-
     const formData = new FormData()
     formData.append('xml_submission_file', Buffer.from(xml), {filename: uuid, contentType: 'application/xml'})
 
     if (attachments) {
-      await Promise.all(attachments.map(async (attachment) => {
-        const fileXmlName = KoboClientV1Submission.sanitizeFileName(attachment.name)
-        if (attachment.url) {
-          const response = await axios.get(attachment.url, {responseType: 'stream'})
-          formData.append(fileXmlName, response.data, {
-            filename: fileXmlName,
-            contentType: response.headers['content-type'] || 'application/octet-stream',
-          })
-        } else if (attachment.path) {
-          const isBrowser = typeof globalThis !== 'undefined' && 'window' in globalThis
-          if (isBrowser) {
-            throw new Error('Cannot read file from path in browser environment.')
+      await Promise.all(
+        attachments.map(async (attachment) => {
+          const fileXmlName = KoboClientV1Submission.sanitizeFileName(attachment.name)
+          if (attachment.url) {
+            const response = await axios.get(attachment.url, {responseType: 'stream'})
+            formData.append(fileXmlName, response.data, {
+              filename: fileXmlName,
+              contentType: response.headers['content-type'] || 'application/octet-stream',
+            })
+          } else if (attachment.path) {
+            const isBrowser = typeof globalThis !== 'undefined' && 'window' in globalThis
+            if (isBrowser) {
+              throw new Error('Cannot read file from path in browser environment.')
+            }
+            const fs = require('node:fs')
+            if (!fs.existsSync(attachment.path)) {
+              throw new Error(`File does not exist: ${attachment.path}`)
+            }
+            formData.append(attachment.name, fs.createReadStream(attachment.path), {
+              filename: attachment.name.normalize('NFC'),
+            })
           }
-          const fs = require('node:fs')
-          if (!fs.existsSync(attachment.path)) {
-            throw new Error(`File does not exist: ${attachment.path}`)
-          }
-          formData.append(attachment.name, fs.createReadStream(attachment.path), {
-            filename: attachment.name.normalize('NFC'),
-          })
-        }
-      }))
+        }),
+      )
     }
 
-    return retry((retry, number) => {
+    return retry(
+      (retry, number) => {
         return this.api
           .post<Kobo.V1.SubmitResponse>(`/v1/submissions`, {
             body: formData,
@@ -151,7 +149,8 @@ export class KoboClientV1Submission {
             return retry(e)
           })
       },
-      {retries})
+      {retries},
+    )
   }
 
   static readonly formatXml = ({

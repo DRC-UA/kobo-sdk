@@ -45,7 +45,7 @@ describe.only('Real API Submission', () => {
 
   it(
     'should submit',
-    async function() {
+    async function () {
       const answers = await sdk.v2.submission.getRaw({formId: env.FORM_ID})
       const last = answers.results[answers.results.length - 1]
       expect(last['date']).toEqual('2024-01-01')
@@ -58,12 +58,12 @@ describe.only('Real API Submission', () => {
       expect(
         last['family/location'][0]['family/location/begin_repeat_s9iB96v5h'][0][
           'family/location/begin_repeat_s9iB96v5h/room'
-          ],
+        ],
       ).toEqual('bedroom')
       expect(
         last['family/location'][0]['family/location/begin_repeat_s9iB96v5h'][1][
           'family/location/begin_repeat_s9iB96v5h/room'
-          ],
+        ],
       ).toEqual('kitchen bathroom')
       expect(last['_id']).toBeDefined()
       expect(last['_uuid']).toBeDefined()
@@ -75,7 +75,7 @@ describe.only('Real API Submission', () => {
 
   it(
     'should update non repeated questions',
-    async function() {
+    async function () {
       const answers = await sdk.v2.submission.get({formId: env.FORM_ID}).then((_) => _.results)
       const last = answers[answers.length - 1]
       await sdk.v2.submission.update({
@@ -105,7 +105,7 @@ describe.only('Real API Submission', () => {
 
   it(
     'should delete all',
-    async function() {
+    async function () {
       const answers = await sdk.v2.submission.get({formId: env.FORM_ID})
       expect(answers.results.length).toBeGreaterThan(0)
       await sdk.v2.submission.delete({formId: env.FORM_ID, submissionIds: answers.results.map((_) => _._id)})
@@ -115,14 +115,24 @@ describe.only('Real API Submission', () => {
     duration(20, 'second'),
   )
 
-  it('should get last submission date', async function() {
-    const forms = await sdk.v2.form.getAll()
-    const lastAnswers = await Promise.all(forms.results.map(async (form) => {
-      const submissionsCount = await sdk.v2.submission.getRaw({formId: form.uid, filters: {limit: 1}}).then(_ => _.count)
-      return sdk.v2.submission.getRaw({formId: form.uid, filters: {limit: 1, offset: submissionsCount - 1}}).then(_ => _.results)
-    }))
-    // RESULT:
-    // aDpk4iBc9XKrUfUoeXFSQe: Tue Feb 04 2025 20:14:57 GMT-0500 (Colombia Standard Time)
-    // ajhmJ9rXMQ9ehpUoCEzqdP: Wed Feb 19 2025 11:57:27 GMT-0500 (Colombia Standard Time)
-  }, duration(20, 'second'))
+  it(
+    'should get last submission date',
+    async function () {
+      const forms = await sdk.v2.form.getAll()
+      const lastAnswers = await Promise.all(
+        forms.results.map(async (form) => {
+          const submissionsCount = await sdk.v2.submission
+            .getRaw({formId: form.uid, filters: {limit: 1}})
+            .then((_) => _.count)
+          return sdk.v2.submission
+            .getRaw({formId: form.uid, filters: {limit: 1, offset: submissionsCount - 1}})
+            .then((_) => _.results)
+        }),
+      )
+      // RESULT:
+      // aDpk4iBc9XKrUfUoeXFSQe: Tue Feb 04 2025 20:14:57 GMT-0500 (Colombia Standard Time)
+      // ajhmJ9rXMQ9ehpUoCEzqdP: Wed Feb 19 2025 11:57:27 GMT-0500 (Colombia Standard Time)
+    },
+    duration(20, 'second'),
+  )
 })

@@ -18,8 +18,7 @@ export class KoboClientV2Submission {
     private log: Logger,
     public parent: KoboClientV2,
     private editSdk = new KoboClientV2SubmissionFixedUpdated(api, log, this),
-  ) {
-  }
+  ) {}
 
   static readonly parseDate = (_: Date) => _.toISOString()
 
@@ -115,7 +114,6 @@ export class KoboClientV2Submission {
   }
 
   readonly getRaw = ({formId, filters = {}}: {formId: Kobo.Form.Id; filters?: Kobo.Submission.Filter}) => {
-
     const fetchPage = async ({
       limit = KoboClientV2Submission.MAX_KOBO_PAGESIZE,
       offset = 0,

@@ -24,13 +24,21 @@ export class KoboClientV2Form {
   }
 
   static readonly getPermissionSummary = (form: Kobo.Form): Kobo.Permission.Summary[] => {
-    const index = seq(form.permissions).map(_ => {
-      return {
-        userName: _.user.split('/').slice(-2, -1)[0],
-        permissions: _.permission.split('/').slice(-2, -1)[0],
-      }
-    }).groupByAndApply(_ => _.userName, _ => _.map(_ => _.permissions))
-    return Object.entries(index).map(([userName, permissions]) => ({userName, permissions: permissions.get() as Kobo.Permission.Code[]}))
+    const index = seq(form.permissions)
+      .map((_) => {
+        return {
+          userName: _.user.split('/').slice(-2, -1)[0],
+          permissions: _.permission.split('/').slice(-2, -1)[0],
+        }
+      })
+      .groupByAndApply(
+        (_) => _.userName,
+        (_) => _.map((_) => _.permissions),
+      )
+    return Object.entries(index).map(([userName, permissions]) => ({
+      userName,
+      permissions: permissions.get() as Kobo.Permission.Code[],
+    }))
   }
 
   readonly getPermissionSummary = KoboClientV2Form.getPermissionSummary

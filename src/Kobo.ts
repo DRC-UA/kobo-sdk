@@ -182,7 +182,6 @@ export namespace Kobo {
 
   export type Permission = Permission.T
   export namespace Permission {
-
     export enum Label {
       'Add submissions' = 'Add submissions',
       'Edit form' = 'Edit form',
@@ -207,16 +206,18 @@ export namespace Kobo {
     }
 
     export type T = {
-      label: Label | {
-        change_submissions: string // "Edit submissions only from specific users"
-        default: string // "Act on submissions only from specific users"
-        delete_submissions: string // "Delete submissions only from specific users"
-        validate_submissions: string // "Validate submissions only from specific users"
-        view_submissions: string // "View submissions only from specific users"
-      }
+      label:
+        | Label
+        | {
+            change_submissions: string // "Edit submissions only from specific users"
+            default: string // "Act on submissions only from specific users"
+            delete_submissions: string // "Delete submissions only from specific users"
+            validate_submissions: string // "Validate submissions only from specific users"
+            view_submissions: string // "View submissions only from specific users"
+          }
       partial_permissions?: {
         filters: string // [{introduction/staff_code: "CEJ011"}]
-        url: string// "https://kobo.drc.ngo/api/v2/permissions/add_submissions/"
+        url: string // "https://kobo.drc.ngo/api/v2/permissions/add_submissions/"
       }[]
       permission: string // "https://kobo.drc.ngo/api/v2/permissions/change_asset/"
       url: string // "https://kobo.drc.ngo/api/v2/assets/a62ZpworuN4nFLznsUej8r/permission-assignments/p7H7SZR4KRqsJ9EesKMGpC/"
@@ -279,15 +280,15 @@ export namespace Kobo {
       _notes: Notes[]
       _validation_status:
         | {
-        timestamp: number
-        uid: Validation
-        by_whom: string
-      }
+            timestamp: number
+            uid: Validation
+            by_whom: string
+          }
         | {
-        timestamp: undefined
-        uid: undefined
-        by_whom: undefined
-      }
+            timestamp: undefined
+            uid: undefined
+            by_whom: undefined
+          }
       _submitted_by: any
       'formhub/uuid': string
       'meta/instanceId'?: string
