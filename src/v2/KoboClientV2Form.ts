@@ -6,15 +6,22 @@ export class KoboClientV2Form {
   constructor(
     private api: ApiClient,
     private log: Logger,
-  ) {
-  }
+  ) {}
 
   readonly getAll = ({limit = 2000}: {limit?: number} = {}) => {
     return this.api.get<Kobo.Paginate<Kobo.Form.Light>>(`/v2/assets/?q=asset_type%3Asurvey&limit=${limit}`)
   }
 
-  readonly get = ({formId, use$autonameAsName}: {use$autonameAsName?: boolean; formId: Kobo.FormId}) => {
-    return this.api.get<Kobo.Form>(`/v2/assets/${formId}`).then((_) => {
+  readonly get = ({
+    formId,
+    use$autonameAsName,
+    format,
+  }: {
+    use$autonameAsName?: boolean
+    formId: Kobo.FormId
+    format?: 'xml'
+  }) => {
+    return this.api.get<Kobo.Form>(`/v2/assets/${formId}` + (format ? `.${format}` : '')).then((_) => {
       if (use$autonameAsName)
         _.content.survey.forEach((q) => {
           q.name = q.$autoname ?? q.name
