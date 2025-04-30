@@ -69,6 +69,7 @@ export namespace Kobo {
       $kuid: string
       $qpath: string
       $xpath: string
+      required?: boolean
       relevant?: string
       constraint?: string
       constraint_message?: string[]
