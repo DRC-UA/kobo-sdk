@@ -63,6 +63,8 @@ export namespace Kobo {
     export type Id = string
     export type Light = Exclude<Form, 'deployment__links'>
 
+    export type Formula = string
+
     export type Question = {
       name: string
       $autoname: string
@@ -70,15 +72,16 @@ export namespace Kobo {
       $qpath: string
       $xpath: string
       required?: boolean
-      relevant?: string
-      constraint?: string
+      relevant?: Formula
+      default?: Formula
+      constraint?: Formula
       constraint_message?: string[]
       label?: string[]
       hint?: string[]
       appearance?: 'multiline'
       file?: string
       type: QuestionType
-      calculation: string
+      calculation: Formula
       select_from_list_name?: string
     }
 
