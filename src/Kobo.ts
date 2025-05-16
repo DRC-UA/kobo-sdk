@@ -84,6 +84,7 @@ export namespace Kobo {
       calculation: Formula
       choice_filter?: string
       select_from_list_name?: string
+      repeat_count?: Formula
     }
 
     export type Choice = {
