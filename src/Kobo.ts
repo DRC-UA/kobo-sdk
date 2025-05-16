@@ -78,10 +78,11 @@ export namespace Kobo {
       constraint_message?: string[]
       label?: string[]
       hint?: string[]
-      appearance?: 'multiline'
+      appearance?: 'multiline' | 'quick'
       file?: string
       type: QuestionType
       calculation: Formula
+      choice_filter?: string
       select_from_list_name?: string
     }
 
