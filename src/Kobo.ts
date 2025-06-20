@@ -142,6 +142,8 @@ export namespace Kobo {
       | 'start'
       | 'end'
 
+    export type Translated = 'label' | 'hint' | 'constraint_message' | 'media::image' | 'required_message'
+
     export interface Form {
       name: string
       deployment__links: {
@@ -159,7 +161,7 @@ export namespace Kobo {
         schema: string
         settings: {version: string; default_language: string}
         survey: Question[]
-        translated: ['hint', 'label', 'media::image']
+        translated: Translated[]
         translations: string[]
       }
       deployment_status: DeploymentStatus
