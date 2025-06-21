@@ -159,7 +159,7 @@ export namespace Kobo {
       content: {
         choices?: Choice[]
         schema: string
-        settings: {version: string; default_language: string}
+        settings: Partial<{version: string; default_language: string}>
         survey: Question[]
         translated: Translated[]
         translations: string[]
