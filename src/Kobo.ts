@@ -3,6 +3,7 @@ export type Logger = {
   info: (_: string) => void
   debug: (_: string) => void
 }
+export type UUID = string
 
 export namespace Kobo {
   export namespace V1 {

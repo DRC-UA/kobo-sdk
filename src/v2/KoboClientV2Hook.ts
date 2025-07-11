@@ -1,6 +1,6 @@
-import {Kobo, Logger} from '../Kobo'
-import {ApiClient} from '../api-client/ApiClient'
+import {Kobo, Logger, UUID} from '../Kobo'
 import {IApiClient} from '../KoboClient'
+import {KoboError} from '../KoboError'
 
 export class KoboClientV2Hook {
   constructor(
@@ -9,8 +9,33 @@ export class KoboClientV2Hook {
   ) {
   }
 
-  readonly get = ({formId}: {formId: Kobo.Form.Id}): Promise<Kobo.Paginate<Kobo.Hook>> => {
+  readonly get = ({formId}: {formId: Kobo.FormId}): Promise<Kobo.Paginate<Kobo.Hook>> => {
     return this.api.get(`/v2/assets/${formId}/hooks/`)
+  }
+
+  /**
+   * Hook's name can be duplicated. In such case, this endpoint will delete the latest.
+   */
+  readonly deleteByName = async ({
+    formId,
+    name,
+  }: {
+    formId: Kobo.FormId
+    name: string,
+  }) => {
+    const match = await this.get({formId}).then(_ => _.results.find(_ => _.name === name))
+    if (!match) throw new KoboError(`Hook ${name} not found.`)
+    return this.deleteById({formId, id: match.uid})
+  }
+
+  readonly deleteById = ({
+    formId,
+    id,
+  }: {
+    formId: Kobo.FormId
+    id: UUID,
+  }) => {
+    return this.api.delete<void>(`/v2/assets/${formId}/hooks/${id}/`)
   }
 
   readonly create = ({
