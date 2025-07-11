@@ -6,10 +6,15 @@ export class KoboClientV2Form {
   constructor(
     private api: IApiClient,
     private log: Logger,
-  ) {}
+  ) {
+  }
 
   readonly getAll = ({limit = 2000}: {limit?: number} = {}) => {
     return this.api.get<Kobo.Paginate<Kobo.Form.Light>>(`/v2/assets/?q=asset_type%3Asurvey&limit=${limit}`)
+  }
+
+  readonly deployment = ({formId, active}: {formId: Kobo.FormId, active: boolean}) => {
+    return this.api.get(`/v2/assets/${formId}/deployment/`, {body: {active}})
   }
 
   readonly get = ({
