@@ -10,6 +10,7 @@ export type KoboUpdateDataParams<TData extends KoboUpdateDataParamsData = any> =
   formId: Kobo.FormId
   submissionIds: Kobo.SubmissionId[]
   data: TData
+  raw?: boolean
 }
 
 export class KoboClientV2SubmissionFixedUpdated {
@@ -74,19 +75,18 @@ export class KoboClientV2SubmissionFixedUpdated {
           : ''
       return `Update ${name} ${ids} ${JSON.stringify(params.data)}.` + (e ? ` ERR ${e.status}` : '')
     }
-    const {formId, data, submissionIds} = params
+    const {formId, data, submissionIds, questionIndex, raw} = params
+    const finalData = raw
+      ? data
+      : KoboSubmissionFormatter.formatForApiBody({
+        data,
+        output: 'toUpdate',
+        questionIndex,
+      })
+
     return this.api
       .patch<Kobo.Submission.UpdateResponse>(`/v2/assets/${formId}/data/bulk/`, {
-        body: {
-          payload: {
-            submission_ids: submissionIds,
-            data: KoboSubmissionFormatter.formatForApiBody({
-              data,
-              output: 'toUpdate',
-              questionIndex: params.questionIndex,
-            }),
-          },
-        },
+        body: {payload: {submission_ids: submissionIds, data: finalData}},
       })
       .then((_) => {
         this.log.info(message('Success'))
