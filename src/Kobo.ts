@@ -326,7 +326,7 @@ export namespace Kobo {
       filename: string
       download_small_url: string
       question_xpath: string
-      id: number
+      uid: string
     }
   }
 }
