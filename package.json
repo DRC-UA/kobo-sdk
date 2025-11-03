@@ -18,7 +18,7 @@
     "test": "jest"
   },
   "dependencies": {
-    "@axanc/ts-utils": "2.3.2",
+    "@axanc/ts-utils": "3.0.0",
     "@types/form-data": "^2.5.2",
     "@types/promise-retry": "^1.1.6",
     "@types/qs": "^6.9.15",
