@@ -20,19 +20,24 @@ export class KoboClientV2Form {
   readonly get = ({
     formId,
     use$autonameAsName,
-    format,
   }: {
     use$autonameAsName?: boolean
     formId: Kobo.FormId
-    format?: 'xml'
   }) => {
-    return this.api.get<Kobo.Form>(`/v2/assets/${formId}` + (format ? `.${format}` : '')).then((_) => {
+    return this.api.get<Kobo.Form>(`/v2/assets/${formId}`).then((_) => {
       if (use$autonameAsName)
         _.content.survey.forEach((q) => {
           q.name = q.$autoname ?? q.name
         })
       return _
     })
+  }
+  readonly getXml = ({
+    formId,
+  }: {
+    formId: Kobo.FormId
+  }) => {
+    return this.api.get<string>(`/v2/assets/${formId}.xml`)
   }
 
   static readonly getPermissionSummary = (form: Kobo.Form): Kobo.Permission.Summary[] => {
