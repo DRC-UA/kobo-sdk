@@ -131,10 +131,16 @@ export namespace Kobo {
       | 'end_group'
       | 'username'
       | 'geopoint'
+      | 'geotrace'
+      | 'geoshape'
+      | 'barcode'
       | 'image'
       | 'today'
       | 'text'
       | 'calculate'
+      | 'range'
+      | 'audio'
+      | 'video'
       | 'integer'
       | 'decimal'
       | 'select_multiple'
@@ -189,6 +195,8 @@ export namespace Kobo {
       url: string
       version_id: string
       files: File[]
+      xform_link: string
+      xls_link: string
     }
   }
 
