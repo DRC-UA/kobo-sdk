@@ -25,8 +25,10 @@ export class KoboClientV2Submission {
 
   /**
    * Set to 20k for a safe margin (API max is 30k).
+   * UPDATE: reduce the page size to adapt to the upcoming change:
+   * https://community.kobotoolbox.org/t/important-changes-to-api-v2-assets-uid-asset-data-result-limits/74610
    */
-  private static readonly MAX_KOBO_PAGESIZE = 2e4
+  private static readonly MAX_KOBO_PAGESIZE = 1e3
 
   readonly getEditLinkUrl = ({formId, submissionId}: {formId: Kobo.FormId; submissionId: Kobo.SubmissionId}) => {
     return this.api.get<{url: string; detail?: string}>(
