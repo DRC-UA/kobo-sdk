@@ -23,8 +23,8 @@ export class KoboClientV2Form {
   }: {
     use$autonameAsName?: boolean
     formId: Kobo.FormId
-  }) => {
-    return this.api.get<Kobo.Form>(`/v2/assets/${formId}`).then((_) => {
+  }): Promise<Kobo.Form> => {
+    return this.api.get(`/v2/assets/${formId}`).then(KoboClientV2Form.mapForm).then((_) => {
       if (use$autonameAsName)
         _.content.survey.forEach((q) => {
           q.name = q.$autoname ?? q.name
@@ -76,5 +76,12 @@ export class KoboClientV2Form {
 
   readonly updateDeployment = ({formId, active}: {formId: Kobo.FormId; active: boolean}) => {
     return this.api.patch(`/v2/assets/${formId}/deployment/`, {body: {active}})
+  }
+
+  static readonly mapForm = (_: any): Kobo.Form => {
+    _.date_created = new Date(_.date_created)
+    _.date_modified = new Date(_.date_modified)
+    _.deployment__last_submission_time = new Date(_.deployment__last_submission_time)
+    return _
   }
 }

@@ -179,6 +179,9 @@ export namespace Kobo {
       deployment__active: boolean
       // deployment__identifier: "https://kc.humanitarianresponse.info/alexandre_annic_drc/forms/aRHsewShwZhXiy8jrBj9zf"
       deployment__submission_count: 0
+      deployment__last_submission_time: Date
+      deployment__encrypted: boolean
+      deployment__uuid: string
       // downloads: [,…]
       // export_settings: []
       kind: 'asset'
